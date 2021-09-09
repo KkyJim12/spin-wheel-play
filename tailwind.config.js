@@ -5,6 +5,12 @@ module.exports = {
   presets: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    extends: {
+      // fontFamily: {
+      //   display: ['KwangMD_Catthai'],
+      //   body: ['KwangMD_Catthai'],
+      // }
+    },
     screens: {
       sm: '640px',
       md: '768px',

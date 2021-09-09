@@ -4,17 +4,17 @@ import "./styles/main.css";
 
 function App() {
   return (
-    <div className="bg-black min-h-screen text-white grid grid-cols-2">
+    <div className="min-h-screen text-white grid grid-cols-2" style={{
+      backgroundImage: `url("/assets/bg.png")`
+    }}>
       <div className="col-span-1 p-8 bg-blue-900">
-        <div className="flex flex-row">
-          <div className="">
-            <p>สวัสดี คุณโชคดร มีสุข</p>
-            <button className="border border-black text-black bg-yellow-500 rounded-full p-2 flex flex-row justify-center items-center gap-2 ">
+        <div className="grid grid-cols-3">
+          <div className="col-span-2">
+            <p className="" style={{color: "#05FFFE"}}>สวัสดี คุณโชคดี มีสุข</p>
+            <button className="border border-black text-black bg-yellow-500 p-2 flex flex-row justify-center items-center gap-2  ">
               <img src="/assets/exit.png" alt="exit" className="w-8" />
-              ออกจากระบบ
+              <p>ออกจากระบบ</p>
             </button>
-          </div>
-          <div>
             <button className="border-2 border-black text-black bg-yellow-500 rounded-full p-2 flex flex-row justify-center items-center gap-2 ">
               <img src="/assets/edit.png" alt="exit" className="w-8" />
               แก้ไขรหัสผ่าน
@@ -24,7 +24,7 @@ function App() {
               กรอกโค้ด
             </button>
           </div>
-          <div className="text-green-200 text-center ml-auto text-3xl">
+          <div className="text-green-200 text-center ml-auto text-3xl col-span-1 space-y-4">
             <p>ระยะเวลากิจกรรม</p>
             <div className="border-blue-400 border p-4">อีก 20 วัน</div>
           </div>

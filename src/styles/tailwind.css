@@ -3,3 +3,10 @@
 @tailwind components;
 
 @tailwind utilities;
+
+/* @font-face {
+  font-family: 'KwangMD_Catthai';
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/KwangMD-Catthai.ttf) format('truetype');
+} */
