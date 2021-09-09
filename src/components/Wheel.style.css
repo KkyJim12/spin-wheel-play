@@ -1,0 +1,47 @@
+#spin,
+#reset {
+  /* position: absolute;
+  bottom: 20vh;
+  right: 45vw; */
+}
+
+#spin:hover {
+  color: rgb(0, 180, 120);
+  border-color: rgb(0, 180, 120);
+}
+
+#spin:focus,
+#reset:focus {
+  outline: none;
+}
+
+#reset:hover {
+  color: red;
+  border-color: red;
+}
+
+#readout {
+  position: absolute;
+  bottom: 7vh;
+  left: 35vw;
+}
+
+#selector {
+  position: absolute;
+  color: #ff0000;
+  top: 60px;
+  left: 230px;
+  font-size: 40px;
+  z-index: 3;
+}
+
+#result {
+  font-size: 50px;
+  color: rgb(0, 180, 120);
+}
+
+input {
+  font-size: 16px;
+  border: none;
+  border-bottom: 1px solid black;
+}
