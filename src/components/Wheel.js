@@ -1,6 +1,9 @@
 import React from "react";
 import "./Wheel.style.css";
 
+const spinNow = () => {
+  document.getElementById("spin").click();
+};
 
 export class Wheel extends React.Component {
   state = {
@@ -15,7 +18,7 @@ export class Wheel extends React.Component {
     offset: null, // RADIANS
     net: null, // RADIANS
     result: null, // INDEX
-    spinning: false
+    spinning: false,
   };
 
   componentDidMount() {
@@ -28,13 +31,13 @@ export class Wheel extends React.Component {
     let numOptions = this.state.list.length;
     let arcSize = (2 * Math.PI) / numOptions;
     this.setState({
-      angle: arcSize
+      angle: arcSize,
     });
 
     // get index of starting position of selector
     this.topPosition(numOptions, arcSize);
 
-    let colors = ["white", "blue"];
+    let colors = ["#3e79d4", "white"];
 
     // dynamically generate sectors from state list
     let angle = 0;
@@ -45,7 +48,7 @@ export class Wheel extends React.Component {
       this.renderSector(i + 1, text, angle, arcSize, colors[i % 2]);
       angle += arcSize;
     }
-    this.renderCircle();
+    // this.renderCircle();
   }
 
   topPosition = (num, angle) => {
@@ -72,7 +75,7 @@ export class Wheel extends React.Component {
 
     this.setState({
       top: topSpot - 1,
-      offset: degreesOff
+      offset: degreesOff,
     });
   };
 
@@ -158,7 +161,7 @@ export class Wheel extends React.Component {
     ctx.beginPath();
     ctx.font = "20px serif";
     ctx.fillStyle = "#000000";
-    ctx.fillText("กด!", x - 14, y + 16 / 2);
+    ctx.fillText("กด!", x - 16, y + 16 / 2);
 
     ctx.fill();
   }
@@ -178,7 +181,7 @@ export class Wheel extends React.Component {
     this.setState({
       rotate: randomSpin,
       easeOut: 2,
-      spinning: true
+      spinning: true,
     });
 
     // calcalute result after wheel stops spinning
@@ -209,7 +212,7 @@ export class Wheel extends React.Component {
     // set state variable to display result
     this.setState({
       net: netRotation,
-      result: result
+      result: result,
     });
   };
 
@@ -219,13 +222,13 @@ export class Wheel extends React.Component {
       rotate: 0,
       easeOut: 0,
       result: null,
-      spinning: false
+      spinning: false,
     });
   };
 
   render() {
     return (
-      <div className="relative w-4/6 h-4/6">
+      <div className="relative w-4/6 h-4/6 flex justify-center items-center">
         <span id="selector">&#9660;</span>
         <canvas
           id="wheel"
@@ -233,16 +236,32 @@ export class Wheel extends React.Component {
           height="500"
           style={{
             WebkitTransform: `rotate(${this.state.rotate}deg)`,
-            WebkitTransition: `-webkit-transform ${this.state.easeOut}s ease-out`
+            WebkitTransition: `-webkit-transform ${this.state.easeOut}s ease-out`,
           }}
         />
+        <button
+          onClick={() => spinNow()}
+          className="absolute rounded-full bg-yellow-400 p-2"
+        >
+          กด!
+        </button>
 
         {this.state.spinning ? (
-          <button type="button" id="reset" onClick={this.reset}>
+          <button
+            style={{ display: "none" }}
+            type="button"
+            id="spin"
+            onClick={this.reset}
+          >
             reset
           </button>
         ) : (
-          <button type="button" id="spin" onClick={this.spin}>
+          <button
+            style={{ display: "none" }}
+            type="button"
+            id="spin"
+            onClick={this.spin}
+          >
             spin
           </button>
         )}
@@ -256,4 +275,3 @@ export class Wheel extends React.Component {
     );
   }
 }
-
