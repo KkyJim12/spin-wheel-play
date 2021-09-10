@@ -225,7 +225,7 @@ export class Wheel extends React.Component {
 
   render() {
     return (
-      <div className="relative">
+      <div className="relative w-4/6 h-4/6">
         <span id="selector">&#9660;</span>
         <canvas
           id="wheel"
