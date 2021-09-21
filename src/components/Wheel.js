@@ -8,7 +8,7 @@ const spinNow = () => {
 export class Wheel extends React.Component {
   state = {
     list: ["A", "B", "C", "D", "E", "F"],
-    radius: 75, // PIXELS
+    radius: 100, // PIXELS
     rotate: 0, // DEGREES
     easeOut: 0, // SECONDS
     angle: 5, // RADIANS
@@ -87,8 +87,8 @@ export class Wheel extends React.Component {
     let startAngle = start;
     let endAngle = start + arc;
     let angle = index * arc;
-    let baseSize = radius * 3.33;
-    let textRadius = baseSize - 150;
+    let baseSize = radius * Math.PI;
+    let textRadius = baseSize - 180;
 
     ctx.beginPath();
     ctx.arc(x, y, radius, startAngle, endAngle, false);
@@ -100,15 +100,15 @@ export class Wheel extends React.Component {
     ctx.fillStyle = "black";
     ctx.stroke();
 
-    ctx.save();
-    ctx.translate(
-      baseSize + Math.cos(angle - arc / 2) * textRadius,
-      baseSize + Math.sin(angle - arc / 2) * textRadius
-    );
+    // ctx.save();
+    // ctx.translate(
+    //   baseSize + Math.cos(angle - arc / 2) * textRadius,
+    //   baseSize + Math.sin(angle - arc / 2) * textRadius
+    // );
 
-    ctx.rotate(angle - arc / 2 + Math.PI);
-    ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
-    ctx.restore();
+    // ctx.rotate(angle - arc / 2 + Math.PI);
+    // ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
+    // ctx.restore();
 
     const image = new Image(30, 30);
     image.src =
@@ -149,9 +149,6 @@ export class Wheel extends React.Component {
     ctx.stroke();
 
     ctx.beginPath();
-    // ctx.arc(x, y, 10, 0, Math.PI * 2, true);
-    // ctx.stroke();
-
     ctx.arc(dotX, dotY, 5, 0, 2 * Math.PI, false);
     ctx.fillStyle = "white";
     ctx.fill();
@@ -259,7 +256,7 @@ export class Wheel extends React.Component {
         />
         <button
           onClick={() => spinNow()}
-          className="absolute rounded-full bg-yellow-400 p-2"
+          className="absolute rounded-full bg-yellow-400 p-4"
         >
           กด!
         </button>

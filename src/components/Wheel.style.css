@@ -29,7 +29,7 @@
 #selector {
   position: absolute;
   color: #ff0000;
-  top: 60px;
+  top: 0;
   font-size: 40px;
   z-index: 3;
 }
