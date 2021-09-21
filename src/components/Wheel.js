@@ -7,7 +7,7 @@ const spinNow = () => {
 
 export class Wheel extends React.Component {
   state = {
-    list: ["A", "B", "C", "D", "E", "F"],
+    list: this.props.eventPrizeRandom,
     radius: 100, // PIXELS
     rotate: 0, // DEGREES
     easeOut: 0, // SECONDS
@@ -41,9 +41,9 @@ export class Wheel extends React.Component {
     let angle = 0;
 
     for (let i = 0; i < numOptions; i++) {
-      let text = this.state.list[i];
-      this.renderBorder(i + 1, text, angle, arcSize, colors[i % 2]);
-      this.renderSector(i + 1, text, angle, arcSize, colors[i % 2]);
+      let imageSrc = this.state.list[i];
+      this.renderBorder(i + 1, imageSrc, angle, arcSize, colors[i % 2]);
+      this.renderSector(i + 1, imageSrc, angle, arcSize, colors[i % 2]);
       angle += arcSize;
     }
     // this.renderCircle();
@@ -77,7 +77,7 @@ export class Wheel extends React.Component {
     });
   };
 
-  renderSector(index, text, start, arc, color) {
+  renderSector(index, imageSrc, start, arc, color) {
     // create canvas arc for each list element
     let canvas = document.getElementById("wheel");
     let ctx = canvas.getContext("2d");
@@ -111,8 +111,7 @@ export class Wheel extends React.Component {
     // ctx.restore();
 
     const image = new Image(30, 30);
-    image.src =
-      "https://backend.central.co.th/media/catalog/product/f/1/f1fe34e52b446c1b4011908bb4faf30ea22c7290_mkp0619878dummy.jpg";
+    image.src = imageSrc;
     image.onload = () => {
       const imageWidth = 40;
       const imageHeight = 40;
