@@ -1,11 +1,19 @@
 import MainLayout from 'layouts/MainLayout';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 
 const App = () => {
   return (
     <>
       <Router>
         <Switch>
+          <Route path='/' exact>
+            <Redirect to='/init' />
+          </Route>
           <Route path='/:id' exact>
             <MainLayout />
           </Route>

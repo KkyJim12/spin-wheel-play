@@ -1,15 +1,15 @@
-import React from "react";
-import "./Wheel.style.css";
+import React from 'react';
+import './Wheel.style.css';
+import axios from 'axios';
+import TestImage from 'assets/image/coin-b.png';
 
 const spinNow = () => {
-  document.getElementById("spin").click();
+  document.getElementById('spin').click();
 };
 
 export class Wheel extends React.Component {
   state = {
-    list: ["$100", "$500", "$9,999", "$1", "$60", "$1,000"],
-    // list: ["$100", "$500", "$9,999", "$1", "$60", "$1,000", "$4.44"],
-    // list: ["$100","$500","$9,999","$1","$60"],
+    list: [''],
     radius: 75, // PIXELS
     rotate: 0, // DEGREES
     easeOut: 0, // SECONDS
@@ -37,7 +37,7 @@ export class Wheel extends React.Component {
     // get index of starting position of selector
     this.topPosition(numOptions, arcSize);
 
-    let colors = ["#3e79d4", "white"];
+    let colors = ['#3e79d4', 'white'];
 
     // dynamically generate sectors from state list
     let angle = 0;
@@ -81,8 +81,8 @@ export class Wheel extends React.Component {
 
   renderSector(index, text, start, arc, color) {
     // create canvas arc for each list element
-    let canvas = document.getElementById("wheel");
-    let ctx = canvas.getContext("2d");
+    let canvas = document.getElementById('wheel');
+    let ctx = canvas.getContext('2d');
     let x = canvas.width / 2;
     let y = canvas.height / 2;
     let radius = this.state.radius;
@@ -96,11 +96,18 @@ export class Wheel extends React.Component {
     ctx.arc(x, y, radius, startAngle, endAngle, false);
     ctx.lineWidth = radius * 2;
     ctx.strokeStyle = color;
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = 'blue';
 
-    ctx.font = "17px Arial";
-    ctx.fillStyle = "black";
+    ctx.font = '17px Arial';
+    ctx.fillStyle = 'black';
     ctx.stroke();
+
+    // const image = new Image();
+    // image.src =
+    //   'https://backend.central.co.th/media/catalog/product/f/1/f1fe34e52b446c1b4011908bb4faf30ea22c7290_mkp0619878dummy.jpg';
+    // image.onload = () => {
+    //   ctx.drawImage(image, x / 2, y, 50, 50);
+    // };
 
     ctx.save();
     ctx.translate(
@@ -113,8 +120,8 @@ export class Wheel extends React.Component {
   }
   renderBorder(index, text, start, arc, color) {
     // create canvas arc for each list element
-    let canvas = document.getElementById("wheel");
-    let ctx = canvas.getContext("2d");
+    let canvas = document.getElementById('wheel');
+    let ctx = canvas.getContext('2d');
     let x = canvas.width / 2;
     let y = canvas.height / 2;
     let radius = this.state.radius;
@@ -127,7 +134,7 @@ export class Wheel extends React.Component {
     ctx.beginPath();
     ctx.arc(x, y, radius, startAngle, endAngle, false);
     ctx.lineWidth = radius * 2.5;
-    ctx.strokeStyle = "orange";
+    ctx.strokeStyle = 'orange';
     ctx.stroke();
 
     ctx.beginPath();
@@ -135,15 +142,15 @@ export class Wheel extends React.Component {
     // ctx.stroke();
 
     ctx.arc(dotX, dotY, 5, 0, 2 * Math.PI, false);
-    ctx.fillStyle = "white";
+    ctx.fillStyle = 'white';
     ctx.fill();
 
     ctx.restore();
   }
   renderCircle() {
     // create canvas arc for each list element
-    let canvas = document.getElementById("wheel");
-    let ctx = canvas.getContext("2d");
+    let canvas = document.getElementById('wheel');
+    let ctx = canvas.getContext('2d');
     let x = canvas.width / 2;
     let y = canvas.height / 2;
 
@@ -153,15 +160,15 @@ export class Wheel extends React.Component {
     var endAngle = Math.PI + (Math.PI * 2) / 2; // End point on circle
 
     ctx.arc(x, y, radius, startAngle, endAngle, false);
-    ctx.fillStyle = "yellow";
+    ctx.fillStyle = 'yellow';
 
     ctx.fill();
     ctx.restore();
 
     ctx.beginPath();
-    ctx.font = "20px serif";
-    ctx.fillStyle = "#000000";
-    ctx.fillText("กด!", x - 16, y + 16 / 2);
+    ctx.font = '20px serif';
+    ctx.fillStyle = '#000000';
+    ctx.fillText('กด!', x - 16, y + 16 / 2);
 
     ctx.fill();
   }
@@ -228,12 +235,12 @@ export class Wheel extends React.Component {
 
   render() {
     return (
-      <div className="relative w-4/6 h-4/6 flex justify-center items-center">
-        <span id="selector">&#9660;</span>
+      <div className='relative w-4/6 h-4/6 flex justify-center items-center'>
+        <span id='selector'>&#9660;</span>
         <canvas
-          id="wheel"
-          width="500"
-          height="500"
+          id='wheel'
+          width='500'
+          height='500'
           style={{
             WebkitTransform: `rotate(${this.state.rotate}deg)`,
             WebkitTransition: `-webkit-transform ${this.state.easeOut}s ease-out`,
@@ -241,25 +248,25 @@ export class Wheel extends React.Component {
         />
         <button
           onClick={() => spinNow()}
-          className="absolute rounded-full bg-yellow-400 p-2"
+          className='absolute rounded-full bg-yellow-400 p-2'
         >
           กด!
         </button>
 
         {this.state.spinning ? (
           <button
-            style={{ display: "none" }}
-            type="button"
-            id="spin"
+            style={{ display: 'none' }}
+            type='button'
+            id='spin'
             onClick={this.reset}
           >
             reset
           </button>
         ) : (
           <button
-            style={{ display: "none" }}
-            type="button"
-            id="spin"
+            style={{ display: 'none' }}
+            type='button'
+            id='spin'
             onClick={this.spin}
           >
             spin
