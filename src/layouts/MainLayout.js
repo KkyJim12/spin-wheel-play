@@ -3,15 +3,22 @@ import MenuBar from 'components/MenuBar';
 import PrizeTable from 'components/PrizeTable';
 import { Wheel } from 'components/Wheel';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import 'styles/main.css';
 
 const MainLayout = () => {
+  let { id } = useParams();
+  let history = useHistory();
+
   useEffect(() => {
     getEvent();
+    getWalletInfo();
   }, []);
 
   const [modal, setModal] = useState(false);
+  const [coinA, setCoinA] = useState(0);
+  const [coinB, setCoinB] = useState(0);
+  const [coinC, setCoinC] = useState(0);
 
   const [endDate, setendDate] = useState('');
   const [eventPrizeExchange, setEventPrizeExchange] = useState([]);
@@ -20,7 +27,20 @@ const MainLayout = () => {
     'url("/assets/bg.png")'
   );
   const [bannerImage, setBannerImage] = useState('');
-  let { id } = useParams();
+
+  const getWalletInfo = async () => {
+    try {
+      const response = await axios.get(
+        process.env.REACT_APP_API_URL + '/api/v1/play/auth/wallet/' + id
+      );
+
+      setCoinA(response.data.wallet[0].coinA);
+      setCoinB(response.data.wallet[0].coinB);
+      setCoinC(response.data.wallet[0].coinC);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   const getEvent = async () => {
     try {
@@ -47,6 +67,10 @@ const MainLayout = () => {
       setBannerImage(response.data.data.settingInfo.bannerImage);
       setendDate(response.data.data.event.endDate);
       setEventPrizeExchange(response.data.data.eventPrizeExchange);
+
+      if (id === 'init') {
+        history.push(`/${response.data.data.event.id}`);
+      }
     } catch (error) {
       console.log(error.response);
     }
@@ -64,7 +88,11 @@ const MainLayout = () => {
           <div className='col-span-5 md:col-span-3'>
             <div className='p-4 md:h-screen'>
               <div className='mb-4'>
-                <MenuBar endDate={endDate} modal={modal} />
+                <MenuBar
+                  getWalletInfo={getWalletInfo}
+                  endDate={endDate}
+                  modal={modal}
+                />
               </div>
               <div
                 className='h-80 md:h-4/6 overflow-y-scroll'
@@ -91,7 +119,7 @@ const MainLayout = () => {
                   alt='exit'
                   className='absolute w-12 -left-4 -top-2'
                 />
-                <p className='text-black text-xl'>0</p>
+                <p className='text-black text-xl'>{coinA}</p>
               </div>
               <div
                 className='relative flex-1 flex-row text-center rounded-full'
@@ -102,7 +130,7 @@ const MainLayout = () => {
                   alt='exit'
                   className='absolute w-12 -left-4 -top-2'
                 />
-                <p className='text-black text-xl'>0</p>
+                <p className='text-black text-xl'>{coinB}</p>
               </div>
               <div
                 className='relative flex-1 flex-row text-center rounded-full'
@@ -113,7 +141,7 @@ const MainLayout = () => {
                   alt='exit'
                   className='absolute w-12 -left-4 -top-2'
                 />
-                <p className='text-black text-xl'>0</p>
+                <p className='text-black text-xl'>{coinC}</p>
               </div>
             </div>
             <div className='flex justify-center items-center'>
