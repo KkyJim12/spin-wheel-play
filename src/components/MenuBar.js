@@ -30,6 +30,7 @@ const MenuBar = (props) => {
 
   // Redeem Code Function
   const [key, setKey] = useState('');
+  const [keyError, setKeyError] = useState('');
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -64,6 +65,7 @@ const MenuBar = (props) => {
 
       localStorage.setItem('token', response.data.accessToken);
       localStorage.setItem('fullname', response.data.user.fullname);
+      setFullname(response.data.user.fullname);
       setLoginModalOpen(false);
       setUsername('');
       setPassword('');
@@ -110,15 +112,30 @@ const MenuBar = (props) => {
           key: key,
         }
       );
-      console.log(response);
+      setKey('');
       props.getWalletInfo();
     } catch (error) {
       console.log(error.response);
+      setKey('');
+      setKeyError(error.response.data.message);
     }
   };
 
   const isLogin = (
     <div>
+      {keyError && (
+        <div className='flex w-full h-screen absolute items-center justify-center'>
+          <div className='flex flex-col items-center justify-center bg-white px-10 pt-16 pb-16 w-3/12 text-red-500 rounded-2xl space-y-6'>
+            <h1 className='text-4xl'>{keyError}</h1>
+            <button
+              onClick={() => setKeyError(false)}
+              className='border-2 border-red-500 text-red-500 px-10 py-5 rounded-3xl hover:bg-red-300'
+            >
+              เข้าใจแล้ว !!
+            </button>
+          </div>
+        </div>
+      )}
       <div className='mb-2 flex items-center space-x-4 mb-4'>
         <p className='text-2xl' style={{ color: '#05FFFE' }}>
           สวัสดี {fullname}
