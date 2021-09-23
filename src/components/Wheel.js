@@ -1,5 +1,8 @@
+import axios from 'axios';
 import React from 'react';
 import './Wheel.style.css';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const spinNow = () => {
   document.getElementById('spin').click();
@@ -17,6 +20,8 @@ export class Wheel extends React.Component {
     net: null, // RADIANS
     result: null, // INDEX
     spinning: false,
+    spinError: null,
+    randomSuccess: null,
   };
 
   componentWillReceiveProps() {
@@ -45,8 +50,8 @@ export class Wheel extends React.Component {
 
     for (let i = 0; i < numOptions; i++) {
       let imageSrc = this.state.list[i];
-      this.renderBorder(i + 1, imageSrc, angle, arcSize, colors[i % 2]);
-      this.renderSector(i + 1, imageSrc, angle, arcSize, colors[i % 2]);
+      this.renderBorder(i, imageSrc, angle, arcSize, colors[i % 2]);
+      this.renderSector(i, imageSrc, angle, arcSize, colors[i % 2]);
       angle += arcSize;
     }
     // this.renderCircle();
@@ -191,20 +196,53 @@ export class Wheel extends React.Component {
     return `rgba(${r},${g},${b},0.4)`;
   }
 
-  spin = () => {
-    // set random spin degree and ease out time
-    // set state variables to initiate animation
-    let randomSpin = Math.floor(Math.random() * 900) + 500;
-    this.setState({
-      rotate: randomSpin,
-      easeOut: 2,
-      spinning: true,
-    });
+  spin = async () => {
+    try {
+      let id = this.props.params;
+      const response = await axios.get(
+        process.env.REACT_APP_API_URL + '/api/v1/play/events/random/' + id
+      );
+      // set random spin degree and ease out time
+      // set state variables to initiate animation
 
-    // calcalute result after wheel stops spinning
-    setTimeout(() => {
-      this.getResult(randomSpin);
-    }, 2000);
+      this.props.getWalletInfo();
+
+      console.log(response.data.item.prize.name);
+      this.setState({
+        rotate: response.data.degree,
+        easeOut: 2,
+        spinning: true,
+      });
+
+      // calcalute result after wheel stops spinning
+      setTimeout(() => {
+        this.getResult(this.state.rotate);
+      }, 2000);
+
+      this.setState({
+        randomSuccess: response.data.item.prize,
+      });
+    } catch (error) {
+      this.setState({
+        spinError: error.response.data.message,
+      });
+    }
+  };
+
+  agreeError = () => {
+    this.setState({
+      spinError: null,
+    });
+  };
+
+  agreeRandomSuccess = () => {
+    this.setState({
+      randomSuccess: null,
+      rotate: 0,
+      easeOut: 0,
+      result: null,
+      spinning: false,
+    });
   };
 
   getResult = (spin) => {
@@ -245,50 +283,97 @@ export class Wheel extends React.Component {
 
   render() {
     return (
-      <div className='relative w-4/6 h-4/6 flex justify-center items-center'>
-        <span id='selector'>&#9660;</span>
-        <canvas
-          id='wheel'
-          width='500'
-          height='500'
-          style={{
-            WebkitTransform: `rotate(${this.state.rotate}deg)`,
-            WebkitTransition: `-webkit-transform ${this.state.easeOut}s ease-out`,
-          }}
-        />
-        <button
-          onClick={() => spinNow()}
-          className='absolute rounded-full bg-yellow-400 p-4'
-        >
-          กด!
-        </button>
-
-        {this.state.spinning ? (
-          <button
-            style={{ display: 'none' }}
-            type='button'
-            id='spin'
-            onClick={this.reset}
+      <>
+        {this.state.randomSuccess && (
+          <div
+            style={{
+              top: '50%',
+              left: '50%',
+              width: 500,
+              height: 350,
+              marginTop: -175,
+              marginLeft: -250,
+            }}
+            className='flex absolute items-center justify-center z-20'
           >
-            reset
-          </button>
-        ) : (
-          <button
-            style={{ display: 'none' }}
-            type='button'
-            id='spin'
-            onClick={this.spin}
-          >
-            spin
-          </button>
+            <div className='flex flex-col items-center w-full justify-center bg-white px-10 py-5 w-full rounded-2xl space-y-6'>
+              <h1 style={{ color: '#3d7d3b' }} className='text-4xl'>ยินดีด้วย!!</h1>
+              <h4 style={{ color: '#0b0d48' }} className='text-2xl'>
+                คุณได้รับรางวัล
+              </h4>
+              <img
+                className='w-3/6'
+                src={`${process.env.REACT_APP_API_URL}/uploads/image/${this.state.randomSuccess.image}`}
+                alt='prize'
+              ></img>
+              <button
+                style={{ background: '#0b0d48' }}
+                onClick={() => this.agreeRandomSuccess()}
+                className='border-2 text-white px-10 py-5 rounded-3xl hover:bg-red-300'
+              >
+                ปิด
+              </button>
+            </div>
+          </div>
         )}
-        {/* <div class="display">
+        {this.state.spinError && (
+          <Snackbar
+            sx={{ marginTop: '3rem' }}
+            open={true}
+            anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+            autoHideDuration={3000}
+            onClose={() => this.agreeError()}
+          >
+            <Alert variant='filled' severity='error'>
+              {this.state.spinError}
+            </Alert>
+          </Snackbar>
+        )}
+        <div className='relative w-4/6 h-4/6 flex justify-center items-center z-10'>
+          <span id='selector'>&#9660;</span>
+          <canvas
+            id='wheel'
+            width='500'
+            height='500'
+            style={{
+              WebkitTransform: `rotate(${this.state.rotate}deg)`,
+              WebkitTransition: `-webkit-transform ${this.state.easeOut}s ease-out`,
+            }}
+          />
+          <button
+            onClick={() => spinNow()}
+            className='absolute rounded-full bg-yellow-400 p-4'
+          >
+            กด!
+          </button>
+
+          {this.state.spinning ? (
+            <button
+              style={{ display: 'none' }}
+              type='button'
+              id='spin'
+              onClick={this.reset}
+            >
+              reset
+            </button>
+          ) : (
+            <button
+              style={{ display: 'none' }}
+              type='button'
+              id='spin'
+              onClick={this.spin}
+            >
+              spin
+            </button>
+          )}
+          {/* <div class="display">
           <span id="readout">
             YOU WON:{"  "}
             <span id="result">{this.state.list[this.state.result]}</span>
           </span>
         </div> */}
-      </div>
+        </div>
+      </>
     );
   }
 }

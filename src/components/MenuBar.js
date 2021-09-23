@@ -5,6 +5,8 @@ import ZCoin from 'assets/image/coin-a.png';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const MenuBar = (props) => {
   let { id } = useParams();
@@ -124,17 +126,17 @@ const MenuBar = (props) => {
   const isLogin = (
     <div>
       {keyError && (
-        <div className='flex w-full h-screen absolute items-center justify-center'>
-          <div className='flex flex-col items-center justify-center bg-white px-10 pt-16 pb-16 w-3/12 text-red-500 rounded-2xl space-y-6'>
-            <h1 className='text-4xl'>{keyError}</h1>
-            <button
-              onClick={() => setKeyError(false)}
-              className='border-2 border-red-500 text-red-500 px-10 py-5 rounded-3xl hover:bg-red-300'
-            >
-              เข้าใจแล้ว !!
-            </button>
-          </div>
-        </div>
+        <Snackbar
+          sx={{ marginTop: '3rem' }}
+          open={true}
+          anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+          autoHideDuration={3000}
+          onClose={() => setKeyError('')}
+        >
+          <Alert variant='filled' severity='error'>
+            {keyError}
+          </Alert>
+        </Snackbar>
       )}
       <div className='mb-2 flex items-center space-x-4 mb-4'>
         <p className='text-2xl' style={{ color: '#05FFFE' }}>

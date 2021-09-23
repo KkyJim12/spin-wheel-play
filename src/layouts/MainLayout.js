@@ -12,7 +12,9 @@ const MainLayout = () => {
 
   useEffect(() => {
     getEvent();
-    getWalletInfo();
+    if (id !== 'init') {
+      getWalletInfo();
+    }
   }, []);
 
   const [modal, setModal] = useState(false);
@@ -61,15 +63,18 @@ const MainLayout = () => {
 
       setEventPrizeRandom(itemList);
 
-      setBackgroundImage(
-        `url("${process.env.REACT_APP_API_URL}/uploads/image/${response.data.data.settingInfo.backgroundImage}")`
-      );
-      setBannerImage(response.data.data.settingInfo.bannerImage);
+      if (response.data.data.settingInfo !== null) {
+        setBackgroundImage(
+          `url("${process.env.REACT_APP_API_URL}/uploads/image/${response.data.data.settingInfo.backgroundImage}")`
+        );
+        setBannerImage(response.data.data.settingInfo.bannerImage);
+      }
+
       setendDate(response.data.data.event.endDate);
       setEventPrizeExchange(response.data.data.eventPrizeExchange);
 
       if (id === 'init') {
-        history.push(`/${response.data.data.event.id}`);
+        window.location.href = `/${response.data.data.event.id}`;
       }
     } catch (error) {
       console.log(error.response);
@@ -145,7 +150,11 @@ const MainLayout = () => {
               </div>
             </div>
             <div className='flex justify-center items-center'>
-              <Wheel eventPrizeRandom={eventPrizeRandom} />
+              <Wheel
+                getWalletInfo={getWalletInfo}
+                params={id}
+                eventPrizeRandom={eventPrizeRandom}
+              />
             </div>
           </div>
         </div>
