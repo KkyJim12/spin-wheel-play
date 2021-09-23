@@ -74,7 +74,6 @@ const MenuBar = (props) => {
       setLoginError('');
       setIsAuth(true);
     } catch (error) {
-      console.log(error.response);
       setLoginError(error.response.data.message);
     }
   };
@@ -117,7 +116,6 @@ const MenuBar = (props) => {
       setKey('');
       props.getWalletInfo();
     } catch (error) {
-      console.log(error.response);
       setKey('');
       setKeyError(error.response.data.message);
     }

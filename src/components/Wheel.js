@@ -217,11 +217,10 @@ export class Wheel extends React.Component {
       // calcalute result after wheel stops spinning
       setTimeout(() => {
         this.getResult(this.state.rotate);
+        this.setState({
+          randomSuccess: response.data.item.prize,
+        });
       }, 2000);
-
-      this.setState({
-        randomSuccess: response.data.item.prize,
-      });
     } catch (error) {
       this.setState({
         spinError: error.response.data.message,
@@ -297,7 +296,9 @@ export class Wheel extends React.Component {
             className='flex absolute items-center justify-center z-20'
           >
             <div className='flex flex-col items-center w-full justify-center bg-white px-10 py-5 w-full rounded-2xl space-y-6'>
-              <h1 style={{ color: '#3d7d3b' }} className='text-4xl'>ยินดีด้วย!!</h1>
+              <h1 style={{ color: '#3d7d3b' }} className='text-4xl'>
+                ยินดีด้วย!!
+              </h1>
               <h4 style={{ color: '#0b0d48' }} className='text-2xl'>
                 คุณได้รับรางวัล
               </h4>

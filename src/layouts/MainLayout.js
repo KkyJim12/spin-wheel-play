@@ -3,12 +3,14 @@ import MenuBar from 'components/MenuBar';
 import PrizeTable from 'components/PrizeTable';
 import { Wheel } from 'components/Wheel';
 import { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import 'styles/main.css';
+import CoinA from 'assets/image/coin-a.png';
+import CoinB from 'assets/image/coin-b.png';
+import CoinC from 'assets/image/coin-c.png';
 
 const MainLayout = () => {
   let { id } = useParams();
-  let history = useHistory();
 
   useEffect(() => {
     getEvent();
@@ -24,7 +26,8 @@ const MainLayout = () => {
 
   const [endDate, setendDate] = useState('');
   const [eventPrizeExchange, setEventPrizeExchange] = useState([]);
-  const [eventPrizeRandom, setEventPrizeRandom] = useState(['']);
+  const [eventPrizeRandom, setEventPrizeRandom] = useState([]);
+  const [eventPrizeRandomColor, setEventPrizeRandomColor] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(
     'url("/assets/bg.png")'
   );
@@ -39,9 +42,7 @@ const MainLayout = () => {
       setCoinA(response.data.wallet[0].coinA);
       setCoinB(response.data.wallet[0].coinB);
       setCoinC(response.data.wallet[0].coinC);
-    } catch (error) {
-      console.log(error.response);
-    }
+    } catch (error) {}
   };
 
   const getEvent = async () => {
@@ -61,7 +62,16 @@ const MainLayout = () => {
         );
       }
 
+      let colors = [];
+
+      for (let i = items.length-1; i >=0 ; i--) {
+        colors.push(items[i].color);
+      }
+
+      console.log(colors)
+
       setEventPrizeRandom(itemList);
+      setEventPrizeRandomColor(colors);
 
       if (response.data.data.settingInfo !== null) {
         setBackgroundImage(
@@ -81,8 +91,63 @@ const MainLayout = () => {
     }
   };
 
+  // Rule Modal
+  const [ruleModal, setRuleModal] = useState(false);
+
   return (
     <>
+      {ruleModal && (
+        <div
+          style={{
+            top: '50%',
+            left: '50%',
+            width: 600,
+            height: 550,
+            marginTop: -275,
+            marginLeft: -300,
+          }}
+          className='flex absolute items-center justify-center z-20'
+        >
+          <div className='flex flex-col items-center w-full justify-center bg-white pb-5 w-full rounded-2xl space-y-6'>
+            <div
+              className='w-full flex justify-center rounded-t-2xl py-3'
+              style={{ background: '#0b0d48' }}
+            >
+              <h1 className='text-4xl text-white'>กติกา</h1>
+            </div>
+            <div className='flex flex-col text-2xl py-3'>
+              <p className='flex'>
+                1.เหรียญ{' '}
+                <img className='w-10 mx-2' src={CoinA} alt='coin'></img>
+                สามารถหมุนวงล้อได้ 1 ครั้ง
+              </p>
+              <p className='flex mt-4'>
+                2.หมุนวงล้อ 1 ครั้ง จะได้เหรียญ
+                <img className='w-10 h-10 mx-2' src={CoinB} alt='coin'></img> 1
+                เหรียญ
+              </p>
+              <p>&nbsp;&nbsp;เพื่อนำไปแลกของรางวัลในตาราง</p>
+              <p className='flex mt-4'>
+                3.เหรียญ
+                <img
+                  className='w-10 h-10 mx-2'
+                  src={CoinC}
+                  alt='coin'
+                ></img>{' '}
+                สามารถหาได้จากการหมุนวงล้อ
+              </p>
+              <p>&nbsp;&nbsp;เพื่อนำไปแลกของรางวัลสุดพิเศษในตาราง</p>
+            </div>
+            <button
+              style={{ background: '#0b0d48' }}
+              onClick={() => setRuleModal(false)}
+              className='border-2 text-white px-10 py-5 rounded-3xl hover:bg-red-300'
+            >
+              ปิด
+            </button>
+          </div>
+        </div>
+      )}
       <div
         className='min-h-screen text-white'
         style={{
@@ -149,11 +214,29 @@ const MainLayout = () => {
                 <p className='text-black text-xl'>{coinC}</p>
               </div>
             </div>
+            <div className='flex justify-end px-8 space-x-3'>
+              <button
+                style={{ backgroundColor: '#0002ff' }}
+                className='px-3 py-1 text-white rounded-2xl w-1/6 h-10 text-2xl'
+                type='button'
+                onClick={() => setRuleModal(true)}
+              >
+                กติกา
+              </button>
+              <button
+                style={{ backgroundColor: '#0002ff' }}
+                className='px-3 py-1 text-white rounded-2xl w-1/6 h-10 text-2xl'
+                type='button'
+              >
+                ประวัติ
+              </button>
+            </div>
             <div className='flex justify-center items-center'>
               <Wheel
                 getWalletInfo={getWalletInfo}
                 params={id}
                 eventPrizeRandom={eventPrizeRandom}
+                eventPrizeRandomColor={eventPrizeRandomColor}
               />
             </div>
           </div>
