@@ -8,6 +8,7 @@ import 'styles/main.css';
 import CoinA from 'assets/image/coin-a.png';
 import CoinB from 'assets/image/coin-b.png';
 import CoinC from 'assets/image/coin-c.png';
+import moment from 'moment';
 
 const MainLayout = () => {
   let { id } = useParams();
@@ -38,6 +39,20 @@ const MainLayout = () => {
 
       setCoinA(response.data.wallet[0].coinA);
       setCoinB(response.data.wallet[0].coinB);
+      setCoinC(response.data.wallet[0].coinC);
+    } catch (error) {}
+  };
+
+  const getWalletInfoPlay = async () => {
+    try {
+      const response = await axios.get(
+        process.env.REACT_APP_API_URL + '/api/v1/play/auth/wallet/' + id
+      );
+
+      setCoinA(response.data.wallet[0].coinA);
+      setTimeout(() => {
+        setCoinB(response.data.wallet[0].coinB);
+      }, 2000);
       setCoinC(response.data.wallet[0].coinC);
     } catch (error) {}
   };
@@ -139,6 +154,9 @@ const MainLayout = () => {
     </div>
   );
 
+  const [prizeRandomTransaction, setPrizeRandomTransaction] = useState([]);
+  const [prizeExchangeTransaction, setPrizeExchangeTransaction] = useState([]);
+
   const getPrizeRandomTransaction = async () => {
     try {
       const response = await axios.get(
@@ -149,7 +167,13 @@ const MainLayout = () => {
 
       console.log(response.data.prizeRandomTransaction);
 
-      setPrizeRandomTransaction(response.data.prizeRandomTransaction);
+      let result = response.data.prizeRandomTransaction;
+      let transaction = [];
+
+      for (let i = 0; i < result.length; i++) {
+        transaction.push(result[i]);
+      }
+      setPrizeRandomTransaction(transaction);
 
       console.log(prizeRandomTransaction);
     } catch (error) {
@@ -157,11 +181,34 @@ const MainLayout = () => {
     }
   };
 
-  const [prizeRandomTransaction, setPrizeRandomTransaction] = useState([]);
+  const getPrizeExchangeTransaction = async () => {
+    try {
+      const response = await axios.get(
+        process.env.REACT_APP_API_URL +
+          '/api/v1/play/auth/prize-exchange-transaction/' +
+          id
+      );
+
+      console.log(response.data.prizeExchangeTransaction);
+
+      let result = response.data.prizeExchangeTransaction;
+      let transaction = [];
+
+      for (let i = 0; i < result.length; i++) {
+        transaction.push(result[i]);
+      }
+      setPrizeExchangeTransaction(transaction);
+
+      console.log(prizeExchangeTransaction);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   useEffect(() => {
     getPrizeRandomTransaction();
-  }, []);
+    getPrizeExchangeTransaction();
+  }, [randomPrizeTransactionModal]);
 
   useEffect(() => {
     getEvent();
@@ -185,20 +232,63 @@ const MainLayout = () => {
                     <th className='bg-yellow-300 text-xl py-2 w-3/6'>
                       ของรางวัล
                     </th>
-                    <th className='bg-yellow-300 text-xl py-2 w-2/6'>เวลา</th>
+                    <th className='bg-yellow-300 text-xl py-2 w-1/6'>วันที่</th>
+                    <th className='bg-yellow-300 text-xl py-2 w-1/6'>เวลา</th>
                   </tr>
                 </thead>
                 <tbody>
                   {prizeRandomTransaction.map((item, index) => {
-                    <tr
-                      index={index}
-                      key={item.id}
-                      className='text-left border-t-2 border-black'
-                    >
-                      <td className='text-xl py-2'>{index + 1}</td>
-                      <td className='text-xl py-2'>{item.prize.name}</td>
-                      <td className='text-xl py-2'>{item.createdAt}</td>
-                    </tr>;
+                    return (
+                      <tr
+                        index={index}
+                        key={item.id}
+                        className='text-left border-t-2 border-black'
+                      >
+                        <td className='text-xl py-2'>{index + 1}</td>
+                        <td className='text-xl py-2'>{item.prize.name}</td>
+                        <td className='text-xl py-2'>
+                          {moment(item.createdAt).format('DD/MM/YYYY')}
+                        </td>
+                        <td className='text-xl py-2'>
+                          {moment(item.createdAt).format('hh:mm A')}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <h1 className='text-3xl text-black'>ประวัติการแลกของรางวัล</h1>
+            <div className='h-32 overflow-y-scroll'>
+              <table className='table-fixed w-full'>
+                <thead>
+                  <tr className='text-left'>
+                    <th className='bg-yellow-300 text-xl py-2 w-1/6'>ลำดับ</th>
+                    <th className='bg-yellow-300 text-xl py-2 w-3/6'>
+                      ของรางวัล
+                    </th>
+                    <th className='bg-yellow-300 text-xl py-2 w-1/6'>วันที่</th>
+                    <th className='bg-yellow-300 text-xl py-2 w-1/6'>เวลา</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {prizeExchangeTransaction.map((item, index) => {
+                    return (
+                      <tr
+                        index={index}
+                        key={item.id}
+                        className='text-left border-t-2 border-black'
+                      >
+                        <td className='text-xl py-2'>{index + 1}</td>
+                        <td className='text-xl py-2'>{item.prize.name}</td>
+                        <td className='text-xl py-2'>
+                          {moment(item.createdAt).format('DD/MM/YYYY')}
+                        </td>
+                        <td className='text-xl py-2'>
+                          {moment(item.createdAt).format('hh:mm A')}
+                        </td>
+                      </tr>
+                    );
                   })}
                 </tbody>
               </table>
@@ -225,6 +315,7 @@ const MainLayout = () => {
             <div className='p-4 md:h-screen'>
               <div className='mb-4'>
                 <MenuBar
+                  getPrizeRandomTransaction={getPrizeRandomTransaction}
                   getWalletInfo={getWalletInfo}
                   endDate={endDate}
                   modal={modal}
@@ -234,7 +325,10 @@ const MainLayout = () => {
                 className='h-80 md:h-4/6 overflow-y-scroll'
                 style={{ background: '#0B0D48' }}
               >
-                <PrizeTable eventPrizeExchange={eventPrizeExchange} />
+                <PrizeTable
+                  getWalletInfo={getWalletInfo}
+                  eventPrizeExchange={eventPrizeExchange}
+                />
               </div>
               <div className='bg-white mt-2'>
                 <img
@@ -300,7 +394,7 @@ const MainLayout = () => {
             </div>
             <div className='flex justify-center items-center'>
               <Wheel
-                getWalletInfo={getWalletInfo}
+                getWalletInfo={getWalletInfoPlay}
                 params={id}
                 eventPrizeRandom={eventPrizeRandom}
                 eventPrizeRandomColor={eventPrizeRandomColor}

@@ -206,8 +206,7 @@ export class Wheel extends React.Component {
       // set state variables to initiate animation
 
       this.props.getWalletInfo();
-
-      console.log(response.data.item.prize.name);
+      
       this.setState({
         rotate: response.data.degree,
         easeOut: 2,
