@@ -12,13 +12,6 @@ import CoinC from 'assets/image/coin-c.png';
 const MainLayout = () => {
   let { id } = useParams();
 
-  useEffect(() => {
-    getEvent();
-    if (id !== 'init') {
-      getWalletInfo();
-    }
-  }, []);
-
   const [modal, setModal] = useState(false);
   const [coinA, setCoinA] = useState(0);
   const [coinB, setCoinB] = useState(0);
@@ -32,6 +25,10 @@ const MainLayout = () => {
     'url("/assets/bg.png")'
   );
   const [bannerImage, setBannerImage] = useState('');
+
+  // Random Prize Transaction Modal
+  const [randomPrizeTransactionModal, setRandomPrizeTransactionModal] =
+    useState(false);
 
   const getWalletInfo = async () => {
     try {
@@ -64,11 +61,11 @@ const MainLayout = () => {
 
       let colors = [];
 
-      for (let i = items.length-1; i >=0 ; i--) {
+      for (let i = items.length - 1; i >= 0; i--) {
         colors.push(items[i].color);
       }
 
-      console.log(colors)
+      console.log(colors);
 
       setEventPrizeRandom(itemList);
       setEventPrizeRandomColor(colors);
@@ -94,57 +91,126 @@ const MainLayout = () => {
   // Rule Modal
   const [ruleModal, setRuleModal] = useState(false);
 
+  const ruleModalShow = (
+    <div
+      style={{
+        top: '50%',
+        left: '50%',
+        width: 600,
+        height: 550,
+        marginTop: -275,
+        marginLeft: -300,
+      }}
+      className='flex absolute items-center justify-center z-20'
+    >
+      <div className='flex flex-col items-center w-full justify-center bg-white pb-5 w-full rounded-2xl space-y-6'>
+        <div
+          className='w-full flex justify-center rounded-t-2xl py-3'
+          style={{ background: '#0b0d48' }}
+        >
+          <h1 className='text-4xl text-white'>กติกา</h1>
+        </div>
+        <div className='flex flex-col text-2xl py-3'>
+          <p className='flex'>
+            1.เหรียญ <img className='w-10 mx-2' src={CoinA} alt='coin'></img>
+            สามารถหมุนวงล้อได้ 1 ครั้ง
+          </p>
+          <p className='flex mt-4'>
+            2.หมุนวงล้อ 1 ครั้ง จะได้เหรียญ
+            <img className='w-10 h-10 mx-2' src={CoinB} alt='coin'></img> 1
+            เหรียญ
+          </p>
+          <p>&nbsp;&nbsp;เพื่อนำไปแลกของรางวัลในตาราง</p>
+          <p className='flex mt-4'>
+            3.เหรียญ
+            <img className='w-10 h-10 mx-2' src={CoinC} alt='coin'></img>{' '}
+            สามารถหาได้จากการหมุนวงล้อ
+          </p>
+          <p>&nbsp;&nbsp;เพื่อนำไปแลกของรางวัลสุดพิเศษในตาราง</p>
+        </div>
+        <button
+          style={{ background: '#0b0d48' }}
+          onClick={() => setRuleModal(false)}
+          className='border-2 text-white px-10 py-5 rounded-3xl hover:bg-red-300'
+        >
+          ปิด
+        </button>
+      </div>
+    </div>
+  );
+
+  const getPrizeRandomTransaction = async () => {
+    try {
+      const response = await axios.get(
+        process.env.REACT_APP_API_URL +
+          '/api/v1/play/auth/prize-random-transaction/' +
+          id
+      );
+
+      console.log(response.data.prizeRandomTransaction);
+
+      setPrizeRandomTransaction(response.data.prizeRandomTransaction);
+
+      console.log(prizeRandomTransaction);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  const [prizeRandomTransaction, setPrizeRandomTransaction] = useState([]);
+
+  useEffect(() => {
+    getPrizeRandomTransaction();
+  }, []);
+
+  useEffect(() => {
+    getEvent();
+    if (id !== 'init') {
+      getWalletInfo();
+    }
+  }, []);
+
   return (
     <>
-      {ruleModal && (
-        <div
-          style={{
-            top: '50%',
-            left: '50%',
-            width: 600,
-            height: 550,
-            marginTop: -275,
-            marginLeft: -300,
-          }}
-          className='flex absolute items-center justify-center z-20'
-        >
-          <div className='flex flex-col items-center w-full justify-center bg-white pb-5 w-full rounded-2xl space-y-6'>
-            <div
-              className='w-full flex justify-center rounded-t-2xl py-3'
-              style={{ background: '#0b0d48' }}
-            >
-              <h1 className='text-4xl text-white'>กติกา</h1>
+      {ruleModal && ruleModalShow}
+      {randomPrizeTransactionModal && (
+        <div className='absolute flex flex-col items-center w-full h-screen justify-center z-20'>
+          <div className='bg-white px-20 py-12 py-5 w-3/6 rounded-2xl space-y-6 border-4 border-yellow-500'>
+            <h1 className='text-3xl text-black'>ประวัติการสุ่ม</h1>
+            <div className='h-32 overflow-y-scroll'>
+              <table className='table-fixed w-full'>
+                <thead>
+                  <tr className='text-left'>
+                    <th className='bg-yellow-300 text-xl py-2 w-1/6'>ลำดับ</th>
+                    <th className='bg-yellow-300 text-xl py-2 w-3/6'>
+                      ของรางวัล
+                    </th>
+                    <th className='bg-yellow-300 text-xl py-2 w-2/6'>เวลา</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {prizeRandomTransaction.map((item, index) => {
+                    <tr
+                      index={index}
+                      key={item.id}
+                      className='text-left border-t-2 border-black'
+                    >
+                      <td className='text-xl py-2'>{index + 1}</td>
+                      <td className='text-xl py-2'>{item.prize.name}</td>
+                      <td className='text-xl py-2'>{item.createdAt}</td>
+                    </tr>;
+                  })}
+                </tbody>
+              </table>
             </div>
-            <div className='flex flex-col text-2xl py-3'>
-              <p className='flex'>
-                1.เหรียญ{' '}
-                <img className='w-10 mx-2' src={CoinA} alt='coin'></img>
-                สามารถหมุนวงล้อได้ 1 ครั้ง
-              </p>
-              <p className='flex mt-4'>
-                2.หมุนวงล้อ 1 ครั้ง จะได้เหรียญ
-                <img className='w-10 h-10 mx-2' src={CoinB} alt='coin'></img> 1
-                เหรียญ
-              </p>
-              <p>&nbsp;&nbsp;เพื่อนำไปแลกของรางวัลในตาราง</p>
-              <p className='flex mt-4'>
-                3.เหรียญ
-                <img
-                  className='w-10 h-10 mx-2'
-                  src={CoinC}
-                  alt='coin'
-                ></img>{' '}
-                สามารถหาได้จากการหมุนวงล้อ
-              </p>
-              <p>&nbsp;&nbsp;เพื่อนำไปแลกของรางวัลสุดพิเศษในตาราง</p>
+            <div className='flex justify-center'>
+              <button
+                onClick={() => setRandomPrizeTransactionModal(false)}
+                className='border-2 text-black text-2xl px-10 py-5 rounded-3xl bg-yellow-500'
+              >
+                ปิด
+              </button>
             </div>
-            <button
-              style={{ background: '#0b0d48' }}
-              onClick={() => setRuleModal(false)}
-              className='border-2 text-white px-10 py-5 rounded-3xl hover:bg-red-300'
-            >
-              ปิด
-            </button>
           </div>
         </div>
       )}
@@ -227,6 +293,7 @@ const MainLayout = () => {
                 style={{ backgroundColor: '#0002ff' }}
                 className='px-3 py-1 text-white rounded-2xl w-1/6 h-10 text-2xl'
                 type='button'
+                onClick={() => setRandomPrizeTransactionModal(true)}
               >
                 ประวัติ
               </button>
