@@ -1,7 +1,7 @@
 import axios from 'axios';
 import MenuBar from 'components/MenuBar';
 import PrizeTable from 'components/PrizeTable';
-import { Wheel } from 'components/Wheel';
+import Wheel from 'components/Wheel2';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import 'styles/main.css';
@@ -59,31 +59,38 @@ const MainLayout = () => {
 
   const getEvent = async () => {
     try {
-      const response = await axios.get(
-        process.env.REACT_APP_API_URL + '/api/v1/play/events/' + id
-      );
+      let response = '';
 
-      let items = response.data.data.eventPrizeRandom;
-      let itemList = [];
-
-      for (let i = 0; i < items.length; i++) {
-        itemList.push(
-          process.env.REACT_APP_API_URL +
-            '/uploads/image/' +
-            items[i].prize.image
+      if (!localStorage.getItem('token')) {
+        response = await axios.get(
+          process.env.REACT_APP_API_URL + '/api/v1/play/events/' + id
+        );
+      } else {
+        response = await axios.get(
+          process.env.REACT_APP_API_URL + '/api/v1/play/events/' + id + '/login'
         );
       }
 
-      let colors = [];
+      // let items = response.data.data.eventPrizeRandom;
+      // let itemList = [];
 
-      for (let i = items.length - 1; i >= 0; i--) {
-        colors.push(items[i].color);
-      }
+      // for (let i = 0; i < items.length; i++) {
+      //   itemList.push(
+      //     process.env.REACT_APP_API_URL +
+      //       '/uploads/image/' +
+      //       items[i].prize.image
+      //   );
+      // }
 
-      console.log(colors);
+      // setEventPrizeRandom(response.data.data.eventPrizeRandom);
 
-      setEventPrizeRandom(itemList);
-      setEventPrizeRandomColor(colors);
+      // let colors = [];
+
+      // for (let i = items.length - 1; i >= 0; i--) {
+      //   colors.push(items[i].color);
+      // }
+
+      // setEventPrizeRandomColor(colors);
 
       if (response.data.data.settingInfo !== null) {
         setBackgroundImage(
@@ -165,8 +172,6 @@ const MainLayout = () => {
           id
       );
 
-      console.log(response.data.prizeRandomTransaction);
-
       let result = response.data.prizeRandomTransaction;
       let transaction = [];
 
@@ -174,8 +179,6 @@ const MainLayout = () => {
         transaction.push(result[i]);
       }
       setPrizeRandomTransaction(transaction);
-
-      console.log(prizeRandomTransaction);
     } catch (error) {
       console.log(error.response);
     }
@@ -189,8 +192,6 @@ const MainLayout = () => {
           id
       );
 
-      console.log(response.data.prizeExchangeTransaction);
-
       let result = response.data.prizeExchangeTransaction;
       let transaction = [];
 
@@ -198,21 +199,24 @@ const MainLayout = () => {
         transaction.push(result[i]);
       }
       setPrizeExchangeTransaction(transaction);
-
-      console.log(prizeExchangeTransaction);
     } catch (error) {
       console.log(error.response);
     }
   };
 
   useEffect(() => {
-    getPrizeRandomTransaction();
-    getPrizeExchangeTransaction();
+    if (localStorage.getItem('token')) {
+      getPrizeRandomTransaction();
+      getPrizeExchangeTransaction();
+    }
   }, [randomPrizeTransactionModal]);
 
   useEffect(() => {
     getEvent();
-    if (id !== 'init') {
+  }, []);
+
+  useEffect(() => {
+    if (id !== 'init' && localStorage.getItem('token')) {
       getWalletInfo();
     }
   }, []);
@@ -326,6 +330,7 @@ const MainLayout = () => {
                 style={{ background: '#0B0D48' }}
               >
                 <PrizeTable
+                  getEvent={getEvent}
                   getWalletInfo={getWalletInfo}
                   eventPrizeExchange={eventPrizeExchange}
                 />
@@ -360,7 +365,7 @@ const MainLayout = () => {
                   alt='exit'
                   className='absolute w-12 -left-4 -top-2'
                 />
-                <p className='text-black text-xl'>{coinB}</p>
+                <p className='text-black text-xl'>{coinC}</p>
               </div>
               <div
                 className='relative flex-1 flex-row text-center rounded-full'
@@ -371,7 +376,7 @@ const MainLayout = () => {
                   alt='exit'
                   className='absolute w-12 -left-4 -top-2'
                 />
-                <p className='text-black text-xl'>{coinC}</p>
+                <p className='text-black text-xl'>{coinB}</p>
               </div>
             </div>
             <div className='flex justify-end px-8 space-x-3'>
@@ -392,12 +397,10 @@ const MainLayout = () => {
                 ประวัติ
               </button>
             </div>
-            <div className='flex justify-center items-center'>
+            <div className=''>
               <Wheel
                 getWalletInfo={getWalletInfoPlay}
                 params={id}
-                eventPrizeRandom={eventPrizeRandom}
-                eventPrizeRandomColor={eventPrizeRandomColor}
               />
             </div>
           </div>

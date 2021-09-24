@@ -10,10 +10,13 @@ const PrizeTable = (props) => {
   let { id } = useParams();
 
   const num = props.eventPrizeExchange;
-
   const [exchangeError, setExchangeError] = useState('');
 
-  const exchangePrize = async (exchangeId, prizeId) => {
+  const [exchangeSuccess, setExchangeSuccess] = useState(false);
+
+  const [prizeExchangeImage, setPrizeExchangeImage] = useState('');
+
+  const exchangePrize = async (exchangeId, prizeId, prizeImage) => {
     try {
       const response = await axios.post(
         process.env.REACT_APP_API_URL + '/api/v1/play/events/exchange/' + id,
@@ -23,10 +26,17 @@ const PrizeTable = (props) => {
         }
       );
       props.getWalletInfo();
+      props.getEvent();
+      setPrizeExchangeImage(prizeImage);
+      setExchangeSuccess(true);
     } catch (error) {
-      console.log(error.response);
       setExchangeError(error.response.data.message);
     }
+  };
+
+  const agreeExchangeSuccess = () => {
+    setExchangeSuccess(false);
+    setPrizeExchangeImage('');
   };
 
   return (
@@ -43,6 +53,40 @@ const PrizeTable = (props) => {
             {exchangeError}
           </Alert>
         </Snackbar>
+      )}
+      {exchangeSuccess && (
+        <div
+          style={{
+            top: '50%',
+            left: '50%',
+            width: 500,
+            height: 350,
+            marginTop: -175,
+            marginLeft: -250,
+          }}
+          className='flex absolute items-center justify-center z-20'
+        >
+          <div className='flex flex-col items-center w-full justify-center bg-white px-10 py-5 w-full rounded-2xl space-y-6'>
+            <h1 style={{ color: '#3d7d3b' }} className='text-4xl'>
+              ยินดีด้วย!!
+            </h1>
+            <h4 style={{ color: '#0b0d48' }} className='text-2xl'>
+              คุณแลกรางวัลสำเร็จ
+            </h4>
+            <img
+              className='w-3/6'
+              src={`${process.env.REACT_APP_API_URL}/uploads/image/${prizeExchangeImage}`}
+              alt='prize'
+            ></img>
+            <button
+              style={{ background: '#0b0d48' }}
+              onClick={() => agreeExchangeSuccess()}
+              className='border-2 text-white px-10 py-5 rounded-3xl hover:bg-red-300'
+            >
+              ปิด
+            </button>
+          </div>
+        </div>
       )}
       <div className='h-full rounded-lg'>
         <table className='w-full table-fixed'>
@@ -87,14 +131,19 @@ const PrizeTable = (props) => {
                   </td>
                   <td className='text-center'>
                     <button
-                      onClick={() => exchangePrize(item.id, item.prize.id)}
+                      onClick={() =>
+                        exchangePrize(item.id, item.prize.id, item.prize.image)
+                      }
                       className='border-black bg-yellow-500 px-4 py-2 rounded'
                     >
                       แลกรางวัล
                     </button>
                   </td>
                   <td className='text-center text-yellow-500 font-bold'>
-                    0/{item.limit}
+                    {item.event_prize_exchange_user_limits.length !== 0
+                      ? item.event_prize_exchange_user_limits[0].count
+                      : '0'}
+                    /{item.limit}
                   </td>
                 </tr>
               );
