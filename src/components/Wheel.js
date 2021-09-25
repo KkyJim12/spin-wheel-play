@@ -2,6 +2,7 @@ import React from "react";
 import "./Wheel.style.css";
 import axios from "axios";
 import { Snackbar, Alert } from "@mui/material";
+import { isMobile, isTablet } from "react-device-detect";
 
 const spinNow = () => {
   document.getElementById("spin").click();
@@ -10,7 +11,7 @@ const spinNow = () => {
 export class Wheel extends React.Component {
   state = {
     list: this.props.eventPrizeRandom,
-    radius: 100, // PIXELS
+    radius: isMobile ? 75 : isTablet ? 90 : 120, // PIXELS
     rotate: 0, // DEGREES
     easeOut: 0, // SECONDS
     angle: 0, // RADIANS
@@ -322,11 +323,13 @@ export class Wheel extends React.Component {
           </Snackbar>
         )}
         <div className="relative w-4/6 h-4/6 flex justify-center items-center">
-          <span id="selector">&#9660;</span>
+          <span className="lg:mt-12" id="selector">
+            &#9660;
+          </span>
           <canvas
             id="wheel"
-            width="500"
-            height="500"
+            width={isMobile ? "400" : "700"}
+            height={isMobile ? "400" : "700"}
             style={{
               WebkitTransform: `rotate(${this.state.rotate}deg)`,
               WebkitTransition: `-webkit-transform ${this.state.easeOut}s ease-out`,

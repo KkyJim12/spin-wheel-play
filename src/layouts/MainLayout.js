@@ -9,6 +9,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import "styles/main.css";
+import { isMobile } from "react-device-detect";
 
 const MainLayout = () => {
   let { id } = useParams();
@@ -70,14 +71,14 @@ const MainLayout = () => {
         );
       }
 
-      let itemList = response.data.data.eventPrizeRandom.map(item => {
+      let itemList = response.data.data.eventPrizeRandom.map((item) => {
         return {
           imageSrc:
             process.env.REACT_APP_API_URL +
             "/uploads/image/" +
             item.prize.image,
           color: item.color,
-        }
+        };
       });
       setEventPrizeRandom(itemList);
 
@@ -103,10 +104,10 @@ const MainLayout = () => {
       style={{
         top: "50%",
         left: "50%",
-        width: 600,
-        height: 550,
-        marginTop: -275,
-        marginLeft: -300,
+        width: isMobile ? 400 : 700,
+        height: isMobile ? 400 : 650,
+        marginTop: isMobile ? -200 : -350,
+        marginLeft: isMobile ? -200 : -325,
       }}
       className="flex absolute items-center justify-center z-20"
     >
@@ -117,13 +118,14 @@ const MainLayout = () => {
         >
           <h1 className="text-4xl text-white">กติกา</h1>
         </div>
-        <div className="flex flex-col text-2xl py-3">
+        <div className="flex flex-col text-2xl py-3 px-2">
           <p className="flex">
-            1.เหรียญ <img className="w-10 mx-2" src={CoinA} alt="coin"></img>
+            1.เหรียญ{" "}
+            <img className="h-10 w-10 mx-2" src={CoinA} alt="coin"></img>
             สามารถหมุนวงล้อได้ 1 ครั้ง
           </p>
           <p className="flex mt-4">
-            2.หมุนวงล้อ 1 ครั้ง จะได้เหรียญ
+            2.หมุนวงล้อ 1 ครั้ง จะได้
             <img className="w-10 h-10 mx-2" src={CoinB} alt="coin"></img> 1
             เหรียญ
           </p>
@@ -131,9 +133,9 @@ const MainLayout = () => {
           <p className="flex mt-4">
             3.เหรียญ
             <img className="w-10 h-10 mx-2" src={CoinC} alt="coin"></img>{" "}
-            สามารถหาได้จากการหมุนวงล้อ
+            สามารถหาได้จากการ
           </p>
-          <p>&nbsp;&nbsp;เพื่อนำไปแลกของรางวัลสุดพิเศษในตาราง</p>
+          <p> หมุนวงล้อ เพื่อนำไปแลกของรางวัลสุดพิเศษในตาราง</p>
         </div>
         <button
           style={{ background: "#0b0d48" }}
@@ -224,9 +226,9 @@ const MainLayout = () => {
       {ruleModal && ruleModalShow}
       {randomPrizeTransactionModal && (
         <div className="absolute flex flex-col items-center w-full h-screen justify-center z-20">
-          <div className="bg-white px-20 py-12 py-5 w-3/6 rounded-2xl space-y-6 border-4 border-yellow-500">
+          <div className="bg-white px-4 lg:px-20 py-5 w-5/6 lg:w-3/6 rounded-2xl space-y-6 border-4 border-yellow-500">
             <h1 className="text-3xl text-black">ประวัติการสุ่ม</h1>
-            <div className="h-32 overflow-y-scroll">
+            <div className="h-32 overflow-scroll lg:overflow-hidden">
               <table className="table-fixed w-full">
                 <thead>
                   <tr className="text-left">
@@ -261,7 +263,7 @@ const MainLayout = () => {
               </table>
             </div>
             <h1 className="text-3xl text-black">ประวัติการแลกของรางวัล</h1>
-            <div className="h-32 overflow-y-scroll">
+            <div className="h-32 overflow-scroll lg:overflow-hidden">
               <table className="table-fixed w-full">
                 <thead>
                   <tr className="text-left">
@@ -313,8 +315,8 @@ const MainLayout = () => {
         }}
       >
         <div className="grid grid-cols-5">
-          <div className="col-span-5 md:col-span-3">
-            <div className="p-4 md:h-screen">
+          <div className="col-span-5 lg:col-span-3">
+            <div className="p-4 lg:h-screen">
               <div className="mb-4">
                 <MenuBar
                   getPrizeRandomTransaction={getPrizeRandomTransaction}
@@ -324,8 +326,8 @@ const MainLayout = () => {
                 />
               </div>
               <div
-                className="h-80 md:h-4/6 overflow-y-scroll"
-                style={{ background: "#0B0D48" }}
+                className="overflow-y-scroll"
+                style={{ background: "#0B0D48", height: "58%" }}
               >
                 <PrizeTable
                   getEvent={getEvent}
@@ -335,14 +337,14 @@ const MainLayout = () => {
               </div>
               <div className="bg-white mt-2">
                 <img
-                  className="object-cover h-28 w-full"
+                  className="object-cover h-40 w-full"
                   src={`${process.env.REACT_APP_API_URL}/uploads/image/${bannerImage}`}
                 ></img>
               </div>
             </div>
           </div>
-          <div className="col-span-5 md:col-span-2">
-            <div className="flex flex-row gap-8 p-8">
+          <div className="col-span-5 lg:col-span-2">
+            <div className="flex flex-col lg:flex-row gap-8 p-8">
               <div
                 className="relative flex-1 flex-row text-center rounded-full"
                 style={{ backgroundColor: "#05FFFE" }}
@@ -377,10 +379,10 @@ const MainLayout = () => {
                 <p className="text-black text-xl">{coinB}</p>
               </div>
             </div>
-            <div className="flex justify-end px-8 space-x-3">
+            <div className="flex flex-row justify-end px-8 space-x-3">
               <button
                 style={{ backgroundColor: "#0002ff" }}
-                className="px-3 py-1 text-white rounded-2xl w-1/6 h-10 text-2xl"
+                className="px-3 py-1 text-white rounded-2xl w-1/6 h-10 text-2xl flex-1 lg:flex-none"
                 type="button"
                 onClick={() => setRuleModal(true)}
               >
@@ -388,14 +390,14 @@ const MainLayout = () => {
               </button>
               <button
                 style={{ backgroundColor: "#0002ff" }}
-                className="px-3 py-1 text-white rounded-2xl w-1/6 h-10 text-2xl"
+                className="px-3 py-1 text-white rounded-2xl w-1/6 h-10 text-2xl flex-1 lg:flex-none"
                 type="button"
                 onClick={() => setRandomPrizeTransactionModal(true)}
               >
                 ประวัติ
               </button>
             </div>
-            <div className="">{wheel}</div>
+            <div className="flex justify-center">{wheel}</div>
           </div>
         </div>
       </div>
