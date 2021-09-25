@@ -207,7 +207,7 @@ const MainLayout = () => {
   }, []);
 
   let wheel = null;
-  if (eventPrizeRandom.length > 2) {
+  if (eventPrizeRandom.length > 0) {
     wheel = (
       <Wheel
         eventPrizeRandom={eventPrizeRandom}
