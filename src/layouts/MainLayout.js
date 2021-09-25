@@ -20,11 +20,7 @@ const MainLayout = () => {
 
   const [endDate, setendDate] = useState("");
   const [eventPrizeExchange, setEventPrizeExchange] = useState([]);
-  const [eventPrizeRandom, setEventPrizeRandom] = useState([
-    "https://backend.central.co.th/media/catalog/product/f/1/f1fe34e52b446c1b4011908bb4faf30ea22c7290_mkp0619878dummy.jpg",
-    "https://backend.central.co.th/media/catalog/product/f/1/f1fe34e52b446c1b4011908bb4faf30ea22c7290_mkp0619878dummy.jpg",
-  ]);
-  const [eventPrizeRandomColor, setEventPrizeRandomColor] = useState([]);
+  const [eventPrizeRandom, setEventPrizeRandom] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(
     'url("/assets/bg.png")'
   );
@@ -74,26 +70,16 @@ const MainLayout = () => {
         );
       }
 
-      let items = response.data.data.eventPrizeRandom;
-      let itemList = [];
-
-      for (let i = 0; i < items.length; i++) {
-        itemList.push(
-          process.env.REACT_APP_API_URL +
+      let itemList = response.data.data.eventPrizeRandom.map(item => {
+        return {
+          imageSrc:
+            process.env.REACT_APP_API_URL +
             "/uploads/image/" +
-            items[i].prize.image
-        );
-      }
-
+            item.prize.image,
+          color: item.color,
+        }
+      });
       setEventPrizeRandom(itemList);
-
-      let colors = [];
-
-      for (let i = items.length - 1; i >= 0; i--) {
-        colors.push(items[i].color);
-      }
-
-      setEventPrizeRandomColor(colors);
 
       if (response.data.data.settingInfo !== null) {
         setBackgroundImage(
@@ -220,20 +206,18 @@ const MainLayout = () => {
     }
   }, []);
 
-
-  let wheel = null
+  let wheel = null;
   if (eventPrizeRandom.length > 2) {
     wheel = (
       <Wheel
         eventPrizeRandom={eventPrizeRandom}
-        eventPrizeRandomColor={eventPrizeRandomColor}
         getWalletInfo={getWalletInfoPlay}
         params={id}
       />
-    )
+    );
   }
 
-  console.log({eventPrizeRandom})
+  console.log({ eventPrizeRandom });
 
   return (
     <>
@@ -411,9 +395,7 @@ const MainLayout = () => {
                 ประวัติ
               </button>
             </div>
-            <div className="">
-              {wheel}
-            </div>
+            <div className="">{wheel}</div>
           </div>
         </div>
       </div>

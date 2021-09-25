@@ -36,15 +36,14 @@ export class Wheel extends React.Component {
     // get index of starting position of selector
     this.topPosition(numOptions, arcSize);
 
-    let colors = ["#3e79d4", "white"];
-
     // dynamically generate sectors from state list
     let angle = - Math.PI / 2;
 
     for (let i = 0; i < numOptions; i++) {
-      let imageSrc = this.state.list[i];
-      this.renderBorder(i + 1, imageSrc, angle, arcSize, colors[i % 2]);
-      this.renderSector(i + 1, imageSrc, angle, arcSize, colors[i % 2]);
+      let imageSrc = this.state.list[i].imageSrc;
+      let color = this.state.list[i].color;
+      this.renderBorder(i + 1, imageSrc, angle, arcSize, color);
+      this.renderSector(i + 1, imageSrc, angle, arcSize, color);
       angle += arcSize;
     }
     // this.renderCircle();
