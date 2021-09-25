@@ -140,7 +140,7 @@ const PrizeTable = (props) => {
                     </button>
                   </td>
                   <td className='text-center text-yellow-500 font-bold'>
-                    {item.event_prize_exchange_user_limits.length !== 0
+                    {item.event_prize_exchange_user_limits[0]
                       ? item.event_prize_exchange_user_limits[0].count
                       : '0'}
                     /{item.limit}

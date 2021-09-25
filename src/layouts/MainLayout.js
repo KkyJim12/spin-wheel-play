@@ -1,7 +1,7 @@
 import axios from 'axios';
 import MenuBar from 'components/MenuBar';
 import PrizeTable from 'components/PrizeTable';
-import Wheel from 'components/Wheel2';
+import { Wheel } from 'components/Wheel';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import 'styles/main.css';
@@ -51,9 +51,9 @@ const MainLayout = () => {
 
       setCoinA(response.data.wallet[0].coinA);
       setTimeout(() => {
-        setCoinB(response.data.wallet[0].coinB);
+        setCoinC(response.data.wallet[0].coinC);
       }, 2000);
-      setCoinC(response.data.wallet[0].coinC);
+      setCoinB(response.data.wallet[0].coinB);
     } catch (error) {}
   };
 
@@ -399,6 +399,8 @@ const MainLayout = () => {
             </div>
             <div className=''>
               <Wheel
+                eventPrizeRandom={eventPrizeRandom}
+                eventPrizeRandomColor={eventPrizeRandomColor}
                 getWalletInfo={getWalletInfoPlay}
                 params={id}
               />
