@@ -1,14 +1,14 @@
+import CoinA from "assets/image/coin-a.png";
+import CoinB from "assets/image/coin-b.png";
+import CoinC from "assets/image/coin-c.png";
 import axios from "axios";
 import MenuBar from "components/MenuBar";
 import PrizeTable from "components/PrizeTable";
 import { Wheel } from "components/Wheel";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import "styles/main.css";
-import CoinA from "assets/image/coin-a.png";
-import CoinB from "assets/image/coin-b.png";
-import CoinC from "assets/image/coin-c.png";
-import moment from "moment";
 
 const MainLayout = () => {
   let { id } = useParams();
@@ -85,7 +85,7 @@ const MainLayout = () => {
         );
       }
 
-      setEventPrizeRandom(response.data.data.eventPrizeRandom);
+      setEventPrizeRandom(itemList);
 
       let colors = [];
 
@@ -219,6 +219,21 @@ const MainLayout = () => {
       getWalletInfo();
     }
   }, []);
+
+
+  let wheel = null
+  if (eventPrizeRandom.length > 2) {
+    wheel = (
+      <Wheel
+        eventPrizeRandom={eventPrizeRandom}
+        eventPrizeRandomColor={eventPrizeRandomColor}
+        getWalletInfo={getWalletInfoPlay}
+        params={id}
+      />
+    )
+  }
+
+  console.log({eventPrizeRandom})
 
   return (
     <>
@@ -397,12 +412,7 @@ const MainLayout = () => {
               </button>
             </div>
             <div className="">
-              <Wheel
-                eventPrizeRandom={eventPrizeRandom}
-                eventPrizeRandomColor={eventPrizeRandomColor}
-                getWalletInfo={getWalletInfoPlay}
-                params={id}
-              />
+              {wheel}
             </div>
           </div>
         </div>

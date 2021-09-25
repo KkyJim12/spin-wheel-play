@@ -12,7 +12,7 @@ export class Wheel extends React.Component {
     radius: 100, // PIXELS
     rotate: 0, // DEGREES
     easeOut: 0, // SECONDS
-    angle: 5, // RADIANS
+    angle: 0, // RADIANS
     top: null, // INDEX
     offset: null, // RADIANS
     net: null, // RADIANS
@@ -39,7 +39,7 @@ export class Wheel extends React.Component {
     let colors = ["#3e79d4", "white"];
 
     // dynamically generate sectors from state list
-    let angle = 0;
+    let angle = - Math.PI / 2;
 
     for (let i = 0; i < numOptions; i++) {
       let imageSrc = this.state.list[i];
@@ -87,7 +87,6 @@ export class Wheel extends React.Component {
     let radius = this.state.radius;
     let startAngle = start;
     let endAngle = start + arc;
-    let angle = index * arc;
     let baseSize = radius * Math.PI;
     let textRadius = baseSize - 180;
 
@@ -118,12 +117,12 @@ export class Wheel extends React.Component {
       const imageHeight = 40;
       const centerX = imageWidth / 2.0;
       const centerY = imageHeight / 2.0;
-      let radiusLengthX = Math.cos(angle - arc / 2) * textRadius;
-      let radiusLengthY = Math.sin(angle - arc / 2) * textRadius;
+      let radiusLengthX = Math.cos(endAngle - arc / 2) * textRadius;
+      let radiusLengthY = Math.sin(endAngle - arc / 2) * textRadius;
 
       ctx.save(); //saves the state of canvas
       ctx.translate(x + radiusLengthX, y + radiusLengthY);
-      ctx.rotate(angle - arc / 2 + Math.PI);
+      ctx.rotate(endAngle - arc / 2 + Math.PI);
       ctx.translate(-centerX, -centerY);
       ctx.drawImage(image, 0, 0, imageWidth, imageHeight); //draw the image ;)
       ctx.restore(); //restore the state of canvas
