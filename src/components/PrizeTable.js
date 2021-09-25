@@ -10,7 +10,6 @@ const PrizeTable = (props) => {
   let { id } = useParams();
 
   const num = props.eventPrizeExchange;
-  console.log(num);
   const [exchangeError, setExchangeError] = useState('');
 
   const [exchangeSuccess, setExchangeSuccess] = useState(false);

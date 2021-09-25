@@ -1,16 +1,14 @@
-import axios from 'axios';
-import React from 'react';
-import './Wheel.style.css';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+   
+import React from "react";
+import "./Wheel.style.css";
 
 const spinNow = () => {
-  document.getElementById('spin').click();
+  document.getElementById("spin").click();
 };
 
 export class Wheel extends React.Component {
   state = {
-    list: [''],
+    list: this.props.eventPrizeRandom,
     radius: 100, // PIXELS
     rotate: 0, // DEGREES
     easeOut: 0, // SECONDS
@@ -20,16 +18,11 @@ export class Wheel extends React.Component {
     net: null, // RADIANS
     result: null, // INDEX
     spinning: false,
-    spinError: null,
-    randomSuccess: null,
   };
 
-  componentWillReceiveProps() {
+  componentDidMount() {
     // generate canvas wheel on load
     this.renderWheel();
-    this.setState({
-      list: this.props.eventPrizeRandom,
-    });
   }
 
   renderWheel() {
@@ -43,15 +36,15 @@ export class Wheel extends React.Component {
     // get index of starting position of selector
     this.topPosition(numOptions, arcSize);
 
-    let colors = ['#3e79d4', 'white'];
+    let colors = ["#3e79d4", "white"];
 
     // dynamically generate sectors from state list
     let angle = 0;
 
     for (let i = 0; i < numOptions; i++) {
       let imageSrc = this.state.list[i];
-      this.renderBorder(i, imageSrc, angle, arcSize, colors[i % 2]);
-      this.renderSector(i, imageSrc, angle, arcSize, colors[i % 2]);
+      this.renderBorder(i + 1, imageSrc, angle, arcSize, colors[i % 2]);
+      this.renderSector(i + 1, imageSrc, angle, arcSize, colors[i % 2]);
       angle += arcSize;
     }
     // this.renderCircle();
@@ -87,8 +80,8 @@ export class Wheel extends React.Component {
 
   renderSector(index, imageSrc, start, arc, color) {
     // create canvas arc for each list element
-    let canvas = document.getElementById('wheel');
-    let ctx = canvas.getContext('2d');
+    let canvas = document.getElementById("wheel");
+    let ctx = canvas.getContext("2d");
     let x = canvas.width / 2;
     let y = canvas.height / 2;
     let radius = this.state.radius;
@@ -102,10 +95,10 @@ export class Wheel extends React.Component {
     ctx.arc(x, y, radius, startAngle, endAngle, false);
     ctx.lineWidth = radius * 2;
     ctx.strokeStyle = color;
-    ctx.fillStyle = 'blue';
+    ctx.fillStyle = "blue";
 
-    ctx.font = '17px Arial';
-    ctx.fillStyle = 'black';
+    ctx.font = "17px Arial";
+    ctx.fillStyle = "black";
     ctx.stroke();
 
     // ctx.save();
@@ -138,8 +131,8 @@ export class Wheel extends React.Component {
   }
   renderBorder(index, text, start, arc, color) {
     // create canvas arc for each list element
-    let canvas = document.getElementById('wheel');
-    let ctx = canvas.getContext('2d');
+    let canvas = document.getElementById("wheel");
+    let ctx = canvas.getContext("2d");
     let x = canvas.width / 2;
     let y = canvas.height / 2;
     let radius = this.state.radius;
@@ -152,20 +145,20 @@ export class Wheel extends React.Component {
     ctx.beginPath();
     ctx.arc(x, y, radius, startAngle, endAngle, false);
     ctx.lineWidth = radius * 2.5;
-    ctx.strokeStyle = 'orange';
+    ctx.strokeStyle = "orange";
     ctx.stroke();
 
     ctx.beginPath();
     ctx.arc(dotX, dotY, 5, 0, 2 * Math.PI, false);
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = "white";
     ctx.fill();
 
     ctx.restore();
   }
   renderCircle() {
     // create canvas arc for each list element
-    let canvas = document.getElementById('wheel');
-    let ctx = canvas.getContext('2d');
+    let canvas = document.getElementById("wheel");
+    let ctx = canvas.getContext("2d");
     let x = canvas.width / 2;
     let y = canvas.height / 2;
 
@@ -175,15 +168,15 @@ export class Wheel extends React.Component {
     var endAngle = Math.PI + (Math.PI * 2) / 2; // End point on circle
 
     ctx.arc(x, y, radius, startAngle, endAngle, false);
-    ctx.fillStyle = 'yellow';
+    ctx.fillStyle = "yellow";
 
     ctx.fill();
     ctx.restore();
 
     ctx.beginPath();
-    ctx.font = '20px serif';
-    ctx.fillStyle = '#000000';
-    ctx.fillText('กด!', x - 16, y + 16 / 2);
+    ctx.font = "20px serif";
+    ctx.fillStyle = "#000000";
+    ctx.fillText("กด!", x - 16, y + 16 / 2);
 
     ctx.fill();
   }
@@ -196,51 +189,20 @@ export class Wheel extends React.Component {
     return `rgba(${r},${g},${b},0.4)`;
   }
 
-  spin = async () => {
-    try {
-      let id = this.props.params;
-      const response = await axios.get(
-        process.env.REACT_APP_API_URL + '/api/v1/play/events/random/' + id
-      );
-      // set random spin degree and ease out time
-      // set state variables to initiate animation
-
-      this.props.getWalletInfo();
-      
-      this.setState({
-        rotate: response.data.degree,
-        easeOut: 2,
-        spinning: true,
-      });
-
-      // calcalute result after wheel stops spinning
-      setTimeout(() => {
-        this.getResult(this.state.rotate);
-        this.setState({
-          randomSuccess: response.data.item.prize,
-        });
-      }, 2000);
-    } catch (error) {
-      this.setState({
-        spinError: error.response.data.message,
-      });
-    }
-  };
-
-  agreeError = () => {
+  spin = () => {
+    // set random spin degree and ease out time
+    // set state variables to initiate animation
+    let randomSpin = Math.floor(Math.random() * 900) + 500;
     this.setState({
-      spinError: null,
+      rotate: randomSpin,
+      easeOut: 2,
+      spinning: true,
     });
-  };
 
-  agreeRandomSuccess = () => {
-    this.setState({
-      randomSuccess: null,
-      rotate: 0,
-      easeOut: 0,
-      result: null,
-      spinning: false,
-    });
+    // calcalute result after wheel stops spinning
+    setTimeout(() => {
+      this.getResult(randomSpin);
+    }, 2000);
   };
 
   getResult = (spin) => {
@@ -281,99 +243,50 @@ export class Wheel extends React.Component {
 
   render() {
     return (
-      <>
-        {this.state.randomSuccess && (
-          <div
-            style={{
-              top: '50%',
-              left: '50%',
-              width: 500,
-              height: 350,
-              marginTop: -175,
-              marginLeft: -250,
-            }}
-            className='flex absolute items-center justify-center z-20'
-          >
-            <div className='flex flex-col items-center w-full justify-center bg-white px-10 py-5 w-full rounded-2xl space-y-6'>
-              <h1 style={{ color: '#3d7d3b' }} className='text-4xl'>
-                ยินดีด้วย!!
-              </h1>
-              <h4 style={{ color: '#0b0d48' }} className='text-2xl'>
-                คุณได้รับรางวัล
-              </h4>
-              <img
-                className='w-3/6'
-                src={`${process.env.REACT_APP_API_URL}/uploads/image/${this.state.randomSuccess.image}`}
-                alt='prize'
-              ></img>
-              <button
-                style={{ background: '#0b0d48' }}
-                onClick={() => this.agreeRandomSuccess()}
-                className='border-2 text-white px-10 py-5 rounded-3xl hover:bg-red-300'
-              >
-                ปิด
-              </button>
-            </div>
-          </div>
-        )}
-        {this.state.spinError && (
-          <Snackbar
-            sx={{ marginTop: '3rem' }}
-            open={true}
-            anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-            autoHideDuration={3000}
-            onClose={() => this.agreeError()}
-          >
-            <Alert variant='filled' severity='error'>
-              {this.state.spinError}
-            </Alert>
-          </Snackbar>
-        )}
-        <div className='relative w-4/6 h-4/6 flex justify-center items-center z-10'>
-          <span id='selector'>&#9660;</span>
-          <canvas
-            id='wheel'
-            width='500'
-            height='500'
-            style={{
-              WebkitTransform: `rotate(${this.state.rotate}deg)`,
-              WebkitTransition: `-webkit-transform ${this.state.easeOut}s ease-out`,
-            }}
-          />
-          <button
-            onClick={() => spinNow()}
-            className='absolute rounded-full bg-yellow-400 p-4'
-          >
-            กด!
-          </button>
+      <div className="relative w-4/6 h-4/6 flex justify-center items-center">
+        <span id="selector">&#9660;</span>
+        <canvas
+          id="wheel"
+          width="500"
+          height="500"
+          style={{
+            WebkitTransform: `rotate(${this.state.rotate}deg)`,
+            WebkitTransition: `-webkit-transform ${this.state.easeOut}s ease-out`,
+          }}
+        />
+        <button
+          onClick={() => spinNow()}
+          className="absolute rounded-full bg-yellow-400 p-4"
+        >
+          กด!
+        </button>
 
-          {this.state.spinning ? (
-            <button
-              style={{ display: 'none' }}
-              type='button'
-              id='spin'
-              onClick={this.reset}
-            >
-              reset
-            </button>
-          ) : (
-            <button
-              style={{ display: 'none' }}
-              type='button'
-              id='spin'
-              onClick={this.spin}
-            >
-              spin
-            </button>
-          )}
-          {/* <div class="display">
+        {this.state.spinning ? (
+          <button
+            style={{ display: "none" }}
+            type="button"
+            id="spin"
+            onClick={this.reset}
+          >
+            reset
+          </button>
+        ) : (
+          <button
+            style={{ display: "none" }}
+            type="button"
+            id="spin"
+            onClick={this.spin}
+          >
+            spin
+          </button>
+        )}
+        {/* <div class="display">
           <span id="readout">
             YOU WON:{"  "}
             <span id="result">{this.state.list[this.state.result]}</span>
           </span>
         </div> */}
-        </div>
-      </>
+      </div>
     );
   }
 }
