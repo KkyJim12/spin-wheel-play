@@ -1,4 +1,3 @@
-   
 import React from "react";
 import "./Wheel.style.css";
 
@@ -37,7 +36,7 @@ export class Wheel extends React.Component {
     this.topPosition(numOptions, arcSize);
 
     // dynamically generate sectors from state list
-    let angle = - Math.PI / 2;
+    let angle = -Math.PI / 2;
 
     for (let i = 0; i < numOptions; i++) {
       let imageSrc = this.state.list[i].imageSrc;
@@ -209,7 +208,7 @@ export class Wheel extends React.Component {
     // use count as an index to find value of result from state list
     const { angle, top, offset, list } = this.state;
     let netRotation = ((spin % 360) * Math.PI) / 180; // RADIANS
-    let travel = netRotation + offset;
+    let travel = netRotation + offset - Math.PI / 2;
     let count = top + 1;
     while (travel > 0) {
       travel = travel - angle;
@@ -240,6 +239,8 @@ export class Wheel extends React.Component {
   };
 
   render() {
+    console.log(this.state.result);
+
     return (
       <div className="relative w-4/6 h-4/6 flex justify-center items-center">
         <span id="selector">&#9660;</span>
