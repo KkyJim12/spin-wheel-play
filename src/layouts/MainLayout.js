@@ -101,10 +101,6 @@ const MainLayout = () => {
 
       setendDate(response.data.data.event.endDate);
       setEventPrizeExchange(response.data.data.eventPrizeExchange);
-
-      if (id === 'init') {
-        window.location.href = `/${response.data.data.event.id}`;
-      }
     } catch (error) {
       console.log(error.response);
     }
@@ -216,7 +212,7 @@ const MainLayout = () => {
   }, []);
 
   useEffect(() => {
-    if (id !== 'init' && localStorage.getItem('token')) {
+    if (localStorage.getItem('token')) {
       getWalletInfo();
     }
   }, []);

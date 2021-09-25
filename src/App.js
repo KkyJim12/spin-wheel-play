@@ -11,9 +11,6 @@ const App = () => {
     <>
       <Router>
         <Switch>
-          <Route path='/' exact>
-            <Redirect to='/init' />
-          </Route>
           <Route path='/:id' exact>
             <MainLayout />
           </Route>

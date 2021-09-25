@@ -10,6 +10,7 @@ const PrizeTable = (props) => {
   let { id } = useParams();
 
   const num = props.eventPrizeExchange;
+  console.log(num);
   const [exchangeError, setExchangeError] = useState('');
 
   const [exchangeSuccess, setExchangeSuccess] = useState(false);
@@ -140,8 +141,8 @@ const PrizeTable = (props) => {
                     </button>
                   </td>
                   <td className='text-center text-yellow-500 font-bold'>
-                    {item.event_prize_exchange_user_limits[0]
-                      ? item.event_prize_exchange_user_limits[0].count
+                    {item.event_prize_exchange_user_limit
+                      ? item.event_prize_exchange_user_limit.count
                       : '0'}
                     /{item.limit}
                   </td>
