@@ -104,10 +104,10 @@ const MainLayout = () => {
       style={{
         top: "50%",
         left: "50%",
-        width: isMobile ? 400 : 700,
-        height: isMobile ? 400 : 650,
-        marginTop: isMobile ? -200 : -350,
-        marginLeft: isMobile ? -200 : -325,
+        width: isMobile ? 400 : 600,
+        height: isMobile ? 400 : 500,
+        marginTop: isMobile ? -200 : -250,
+        marginLeft: isMobile ? -200 : -300,
       }}
       className="flex absolute items-center justify-center z-20"
     >

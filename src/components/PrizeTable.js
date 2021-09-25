@@ -5,6 +5,7 @@ import Alert from "@mui/material/Alert";
 import axios from "axios";
 import { useState } from "react";
 import { useParams } from "react-router";
+import { isMobile } from "react-device-detect";
 
 const PrizeTable = (props) => {
   let { id } = useParams();
@@ -59,10 +60,10 @@ const PrizeTable = (props) => {
           style={{
             top: "50%",
             left: "50%",
-            width: 500,
-            height: 350,
-            marginTop: -175,
-            marginLeft: -250,
+            width: isMobile ? 300 : 500,
+            height: isMobile ? 400 : 400,
+            marginTop: isMobile ? -200 : -200,
+            marginLeft: isMobile ? -150 : -250,
           }}
           className="flex absolute items-center justify-center z-20"
         >

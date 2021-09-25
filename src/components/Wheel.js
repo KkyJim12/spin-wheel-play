@@ -11,7 +11,7 @@ const spinNow = () => {
 export class Wheel extends React.Component {
   state = {
     list: this.props.eventPrizeRandom,
-    radius: isMobile ? 75 : isTablet ? 90 : 120, // PIXELS
+    radius: isMobile ? 75 : isTablet ? 90 : 110, // PIXELS
     rotate: 0, // DEGREES
     easeOut: 0, // SECONDS
     angle: 0, // RADIANS
@@ -280,10 +280,10 @@ export class Wheel extends React.Component {
             style={{
               top: "50%",
               left: "50%",
-              width: 500,
-              height: 350,
-              marginTop: -175,
-              marginLeft: -250,
+              width: isMobile ? 300 : 500,
+              height: isMobile ? 400 : 400,
+              marginTop: isMobile ? -200 : -200,
+              marginLeft: isMobile ? -150 : -250,
             }}
             className="flex absolute items-center justify-center z-20"
           >
@@ -322,14 +322,14 @@ export class Wheel extends React.Component {
             </Alert>
           </Snackbar>
         )}
-        <div className="relative w-4/6 h-4/6 flex justify-center items-center">
-          <span className="lg:mt-12" id="selector">
+        <div className="relative w-4/6 h-4/6 flex justify-center items-center mt-8">
+          <span className="" id="selector">
             &#9660;
           </span>
           <canvas
             id="wheel"
-            width={isMobile ? "400" : "700"}
-            height={isMobile ? "400" : "700"}
+            width={isMobile ? "400" : "500"}
+            height={isMobile ? "400" : "500"}
             style={{
               WebkitTransform: `rotate(${this.state.rotate}deg)`,
               WebkitTransition: `-webkit-transform ${this.state.easeOut}s ease-out`,
