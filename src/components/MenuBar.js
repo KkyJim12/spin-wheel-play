@@ -59,6 +59,7 @@ const MenuBar = forwardRef((props, ref) => {
   const openLoginModal = () => {
     props.closeRuleModal();
     props.closeTransactionModal();
+    props.closePopupModal();
     setLoginModalOpen(true);
   };
 
@@ -80,6 +81,7 @@ const MenuBar = forwardRef((props, ref) => {
   const openChangePasswordModal = async () => {
     props.closeRuleModal();
     props.closeTransactionModal();
+    props.closePopupModal();
     closeLoginModal();
     setChangePasswordModalOpen(true);
   };
@@ -102,7 +104,6 @@ const MenuBar = forwardRef((props, ref) => {
       setPassword("");
       setLoginError("");
       setIsAuth(true);
-      props.openPopupModal();
     } catch (error) {
       setLoginError(error.response.data.message);
     }
@@ -214,7 +215,15 @@ const MenuBar = forwardRef((props, ref) => {
   );
 
   const loginModal = (
-    <div className="flex z-10 w-full absolute items-center justify-center">
+    <div
+      style={{
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+      }}
+      className="flex z-10 w-full items-center justify-center"
+    >
       <div className="py-1 w-5/6 lg:w-2/6">
         <div
           style={{ backgroundColor: "#FDAA01" }}
@@ -286,8 +295,16 @@ const MenuBar = forwardRef((props, ref) => {
   );
 
   const changePasswordModal = (
-    <div className="flex z-10 w-full absolute items-center justify-center">
-      <div style={{ width: "35%" }} className="py-1">
+    <div className="flex z-20 items-center justify-center w-full h-full">
+      <div
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+        className="z-20 w-5/6 lg:w-1/4"
+      >
         <div
           style={{ backgroundColor: "#FDAA01" }}
           className="flex items-center justify-center rounded-t-2xl py-4"
@@ -295,7 +312,7 @@ const MenuBar = forwardRef((props, ref) => {
           <img src={EditIcon} alt="login" />
           <span className="text-black text-4xl ml-3">แก้ไขรหัสผ่าน</span>
         </div>
-        <div className="bg-white flex flex-col text-black space-y-5 pt-7 pb-11 rounded-b-2xl">
+        <div className="bg-white flex flex-col text-black space-y-5 pt-7 pb-11 rounded-b-2xl px-3">
           <div className="flex items-center justify-center space-x-3">
             <div className="grid grid-cols-8 items-center">
               <div className="col-span-3 justify-self-end mr-3">

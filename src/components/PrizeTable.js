@@ -93,7 +93,7 @@ const PrizeTable = (props) => {
         <table className="w-full table-fixed">
           <thead>
             <tr
-              className="text-black text-4xl"
+              className="text-black text-2xl"
               style={{ background: "#FFDD00" }}
             >
               <th className="py-2 w-40">รางวัล</th>

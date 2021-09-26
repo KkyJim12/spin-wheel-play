@@ -31,7 +31,7 @@ const MainLayout = () => {
   const [bannerImage, setBannerImage] = useState("");
   const [bannerLink, setBannerLink] = useState("");
   const [popup, setPopup] = useState("");
-  const [popupModal, setPopupModal] = useState(false);
+  const [popupModal, setPopupModal] = useState(true);
 
   // Random Prize Transaction Modal
   const [randomPrizeTransactionModal, setRandomPrizeTransactionModal] =
@@ -44,6 +44,7 @@ const MainLayout = () => {
   const openRuleModal = () => {
     MenuBarRef.current.closeLoginModal();
     MenuBarRef.current.closeChangePasswordModal();
+    closePopupModal();
     closeTransactionModal();
     setRuleModal(true);
   };
@@ -51,6 +52,7 @@ const MainLayout = () => {
   const openTransactionModal = () => {
     MenuBarRef.current.closeLoginModal();
     MenuBarRef.current.closeChangePasswordModal();
+    closePopupModal();
     closeRuleModal();
     setRandomPrizeTransactionModal(true);
   };
@@ -138,40 +140,46 @@ const MainLayout = () => {
   const ruleModalShow = (
     <div
       style={{
+        position: "fixed",
         top: "50%",
         left: "50%",
-        width: isMobile ? 400 : 600,
-        height: isMobile ? 400 : 500,
-        marginTop: isMobile ? -200 : -250,
-        marginLeft: isMobile ? -200 : -300,
+        transform: "translate(-50%, -50%)",
       }}
-      className="flex absolute items-center justify-center z-20"
+      className="flex items-center justify-center z-20 w-full h-full"
     >
-      <div className="flex flex-col items-center w-full justify-center bg-white pb-5 w-full rounded-2xl space-y-6">
+      <div className="flex flex-col items-center justify-center bg-white pb-5 w-5/6 lg:w-2/6 rounded-2xl space-y-6">
         <div
           className="w-full flex justify-center rounded-t-2xl py-3"
           style={{ background: "#0b0d48" }}
         >
           <h1 className="text-4xl text-white">กติกา</h1>
         </div>
-        <div className="flex flex-col text-2xl py-3 px-2">
-          <p className="flex">
-            1.เหรียญ{" "}
-            <img className="h-10 w-10 mx-2" src={CoinA} alt="coin"></img>
-            สามารถหมุนวงล้อได้ 1 ครั้ง
-          </p>
-          <p className="flex mt-4">
-            2.หมุนวงล้อ 1 ครั้ง จะได้
-            <img className="w-10 h-10 mx-2" src={CoinB} alt="coin"></img> 1
-            เหรียญ
-          </p>
-          <p>&nbsp;&nbsp;เพื่อนำไปแลกของรางวัลในตาราง</p>
-          <p className="flex mt-4">
-            3.เหรียญ
-            <img className="w-10 h-10 mx-2" src={CoinC} alt="coin"></img>{" "}
-            สามารถหาได้จากการ
-          </p>
-          <p> หมุนวงล้อ เพื่อนำไปแลกของรางวัลสุดพิเศษในตาราง</p>
+        <div className="flex flex-col text-2xl py-3 px-2 lg:px-10">
+          <div>
+            <span>1.เหรียญ</span>
+            <img className="h-10 w-10 mx-2 inline" src={CoinA} alt="coin"></img>
+            <span>สามารถหมุนวงล้อได้ 1 ครั้ง</span>
+          </div>
+          <div className="mt-5">
+            <span>2.หมุนวงล้อ 1 ครั้ง จะได้</span>
+            <img
+              className="w-10 h-10 mx-2 inline"
+              src={CoinB}
+              alt="coin"
+            ></img>{" "}
+            <span>1 เหรียญ เพื่อนำไปแลกของรางวัลในตาราง</span>
+          </div>
+          <div className="mt-5">
+            <span>3.เหรียญ</span>
+            <img
+              className="w-10 h-10 mx-2 inline"
+              src={CoinC}
+              alt="coin"
+            ></img>{" "}
+            <span>
+              สามารถหาได้จากการ หมุนวงล้อ เพื่อนำไปแลกของรางวัลสุดพิเศษในตาราง
+            </span>
+          </div>
         </div>
         <button
           style={{ background: "#0b0d48" }}
@@ -255,7 +263,9 @@ const MainLayout = () => {
     );
   }
 
-  console.log({ eventPrizeRandom });
+  const closePopupModal = () => {
+    setPopupModal(false);
+  };
 
   return (
     <>
@@ -264,7 +274,7 @@ const MainLayout = () => {
           <div className="relative bg-white w-5/6 lg:w-3/6 space-y-6 ">
             <div className="absolute right-0 mr-2 mt-2 bg-black rounded-lg text-white px-2 py-1 bg-opacity-50">
               <button
-                onClick={() => setPopupModal(false)}
+                onClick={() => closePopupModal()}
                 type="button rounded-full"
               >
                 ปิด
@@ -279,7 +289,15 @@ const MainLayout = () => {
       )}
       {ruleModal && ruleModalShow}
       {randomPrizeTransactionModal && (
-        <div className="absolute flex flex-col items-center w-full h-screen justify-center z-20">
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+          className="flex flex-col items-center w-full h-screen justify-center z-20"
+        >
           <div className="bg-white px-4 lg:px-20 py-5 w-5/6 lg:w-3/6 rounded-2xl space-y-6 border-4 border-yellow-500">
             <h1 className="text-3xl text-black">ประวัติการสุ่ม</h1>
             <div className="h-32 overflow-y-scroll overflow-x-scroll lg:overflow-x-hidden">
@@ -375,6 +393,7 @@ const MainLayout = () => {
                 <MenuBar
                   openPopupModal={openPopupModal}
                   ref={MenuBarRef}
+                  closePopupModal={closePopupModal}
                   closeRuleModal={closeRuleModal}
                   closeTransactionModal={closeTransactionModal}
                   getPrizeRandomTransaction={getPrizeRandomTransaction}
