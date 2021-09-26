@@ -2,13 +2,13 @@ import moment from "moment";
 import LoginIcon from "assets/image/login.png";
 import EditIcon from "assets/image/edit.png";
 import ZCoin from "assets/image/coin-a.png";
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
-const MenuBar = (props) => {
+const MenuBar = forwardRef((props, ref) => {
   let { id } = useParams();
   let today = moment().format();
   let dayDiff = moment(props.endDate).diff(today, "days");
@@ -34,11 +34,33 @@ const MenuBar = (props) => {
   const [key, setKey] = useState("");
   const [keyError, setKeyError] = useState("");
 
+  useImperativeHandle(ref, () => ({
+    closeChangePasswordModal() {
+      setChangePasswordError("");
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmNewPassword("");
+      setChangePasswordModalOpen(false);
+    },
+    closeLoginModal() {
+      setUsername("");
+      setPassword("");
+      setLoginError("");
+      setLoginModalOpen(false);
+    },
+  }));
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
       setIsAuth(true);
     }
   }, []);
+
+  const openLoginModal = () => {
+    props.closeRuleModal();
+    props.closeTransactionModal();
+    setLoginModalOpen(true);
+  };
 
   const closeLoginModal = () => {
     setUsername("");
@@ -53,6 +75,13 @@ const MenuBar = (props) => {
     setNewPassword("");
     setConfirmNewPassword("");
     setChangePasswordModalOpen(false);
+  };
+
+  const openChangePasswordModal = async () => {
+    props.closeRuleModal();
+    props.closeTransactionModal();
+    closeLoginModal();
+    setChangePasswordModalOpen(true);
   };
 
   const login = async () => {
@@ -73,6 +102,7 @@ const MenuBar = (props) => {
       setPassword("");
       setLoginError("");
       setIsAuth(true);
+      props.openPopupModal();
     } catch (error) {
       setLoginError(error.response.data.message);
     }
@@ -150,7 +180,7 @@ const MenuBar = (props) => {
       </div>
       <div className="flex flex-col lg:flex-row lg:space-x-4 space-y-2 lg:space-y-0">
         <button
-          onClick={() => setChangePasswordModalOpen(true)}
+          onClick={() => openChangePasswordModal()}
           className="border-2 border-black text-black bg-yellow-500 rounded-full p-2 flex flex-row justify-center items-center gap-2 "
         >
           <img src="/assets/edit.png" alt="exit" className="w-8" />
@@ -162,7 +192,7 @@ const MenuBar = (props) => {
           </div>
           <input
             style={{ width: "17.5rem" }}
-            maxLength="11"
+            maxLength="15"
             className="pl-12 pr-20 h-max py-2 border-2 border-blue-300 text-black text-2xl placeholder-black bg-white rounded-full flex flex-row justify-center items-center gap-2 focus:outline-none focus:shadow-outline"
             placeholder="กรอกโค้ด"
             onChange={(e) => setKey(e.target.value)}
@@ -346,7 +376,7 @@ const MenuBar = (props) => {
     <>
       <div className="flex justify-center lg:justify-start">
         <button
-          onClick={() => setLoginModalOpen(true)}
+          onClick={() => openLoginModal()}
           style={{ backgroundColor: "#FDAA01" }}
           className="px-5 py-2 text-black flex items-center rounded-xl"
           type="button"
@@ -373,6 +403,6 @@ const MenuBar = (props) => {
       {changePasswordModalOpen && changePasswordModal}
     </>
   );
-};
+});
 
 export default MenuBar;

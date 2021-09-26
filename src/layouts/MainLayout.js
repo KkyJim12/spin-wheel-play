@@ -6,13 +6,16 @@ import MenuBar from "components/MenuBar";
 import PrizeTable from "components/PrizeTable";
 import { Wheel } from "components/Wheel";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router";
 import "styles/main.css";
 import { isMobile } from "react-device-detect";
+import { Link } from "react-router-dom";
+import { width } from "@mui/system";
 
 const MainLayout = () => {
   let { id } = useParams();
+  const MenuBarRef = useRef();
 
   const [modal, setModal] = useState(false);
   const [coinA, setCoinA] = useState(0);
@@ -26,10 +29,39 @@ const MainLayout = () => {
     'url("/assets/bg.png")'
   );
   const [bannerImage, setBannerImage] = useState("");
+  const [bannerLink, setBannerLink] = useState("");
+  const [popup, setPopup] = useState("");
+  const [popupModal, setPopupModal] = useState(false);
 
   // Random Prize Transaction Modal
   const [randomPrizeTransactionModal, setRandomPrizeTransactionModal] =
     useState(false);
+
+  const openPopupModal = () => {
+    setPopupModal(true);
+  };
+
+  const openRuleModal = () => {
+    MenuBarRef.current.closeLoginModal();
+    MenuBarRef.current.closeChangePasswordModal();
+    closeTransactionModal();
+    setRuleModal(true);
+  };
+
+  const openTransactionModal = () => {
+    MenuBarRef.current.closeLoginModal();
+    MenuBarRef.current.closeChangePasswordModal();
+    closeRuleModal();
+    setRandomPrizeTransactionModal(true);
+  };
+
+  const closeRuleModal = () => {
+    setRuleModal(false);
+  };
+
+  const closeTransactionModal = () => {
+    setRandomPrizeTransactionModal(false);
+  };
 
   const getWalletInfo = async () => {
     try {
@@ -87,6 +119,10 @@ const MainLayout = () => {
           `url("${process.env.REACT_APP_API_URL}/uploads/image/${response.data.data.settingInfo.backgroundImage}")`
         );
         setBannerImage(response.data.data.settingInfo.bannerImage);
+
+        setBannerLink(response.data.data.settingInfo.bannerLink);
+
+        setPopup(response.data.data.settingInfo.popupImage);
       }
 
       setendDate(response.data.data.event.endDate);
@@ -139,7 +175,7 @@ const MainLayout = () => {
         </div>
         <button
           style={{ background: "#0b0d48" }}
-          onClick={() => setRuleModal(false)}
+          onClick={() => closeRuleModal()}
           className="border-2 text-white px-10 py-5 rounded-3xl hover:bg-red-300"
         >
           ปิด
@@ -223,12 +259,30 @@ const MainLayout = () => {
 
   return (
     <>
+      {popupModal && popup && (
+        <div className="absolute flex flex-col items-center w-full h-screen justify-center z-20">
+          <div className="relative bg-white w-5/6 lg:w-3/6 space-y-6 ">
+            <div className="absolute right-0 mr-2 mt-2 bg-black rounded-lg text-white px-2 py-1 bg-opacity-50">
+              <button
+                onClick={() => setPopupModal(false)}
+                type="button rounded-full"
+              >
+                ปิด
+              </button>
+            </div>
+            <img
+              className="w-full"
+              src={process.env.REACT_APP_API_URL + "/uploads/image/" + popup}
+            ></img>
+          </div>
+        </div>
+      )}
       {ruleModal && ruleModalShow}
       {randomPrizeTransactionModal && (
         <div className="absolute flex flex-col items-center w-full h-screen justify-center z-20">
           <div className="bg-white px-4 lg:px-20 py-5 w-5/6 lg:w-3/6 rounded-2xl space-y-6 border-4 border-yellow-500">
             <h1 className="text-3xl text-black">ประวัติการสุ่ม</h1>
-            <div className="h-32 overflow-scroll lg:overflow-hidden">
+            <div className="h-32 overflow-y-scroll overflow-x-scroll lg:overflow-x-hidden">
               <table className="table-fixed w-full">
                 <thead>
                   <tr className="text-left">
@@ -263,7 +317,7 @@ const MainLayout = () => {
               </table>
             </div>
             <h1 className="text-3xl text-black">ประวัติการแลกของรางวัล</h1>
-            <div className="h-32 overflow-scroll lg:overflow-hidden">
+            <div className="h-32 overflow-scroll overflow-x-scroll lg:overflow-x-hidden">
               <table className="table-fixed w-full">
                 <thead>
                   <tr className="text-left">
@@ -299,7 +353,7 @@ const MainLayout = () => {
             </div>
             <div className="flex justify-center">
               <button
-                onClick={() => setRandomPrizeTransactionModal(false)}
+                onClick={() => closeTransactionModal()}
                 className="border-2 text-black text-2xl px-10 py-5 rounded-3xl bg-yellow-500"
               >
                 ปิด
@@ -319,6 +373,10 @@ const MainLayout = () => {
             <div className="p-4 lg:h-screen">
               <div className="mb-4">
                 <MenuBar
+                  openPopupModal={openPopupModal}
+                  ref={MenuBarRef}
+                  closeRuleModal={closeRuleModal}
+                  closeTransactionModal={closeTransactionModal}
                   getPrizeRandomTransaction={getPrizeRandomTransaction}
                   getWalletInfo={getWalletInfo}
                   endDate={endDate}
@@ -335,12 +393,17 @@ const MainLayout = () => {
                   eventPrizeExchange={eventPrizeExchange}
                 />
               </div>
-              <div className="bg-white mt-2">
-                <img
-                  className="object-cover h-40 w-full"
-                  src={`${process.env.REACT_APP_API_URL}/uploads/image/${bannerImage}`}
-                ></img>
-              </div>
+              <Link
+                to={{ pathname: bannerLink ? bannerLink : "" }}
+                target="_blank"
+              >
+                <div className="bg-white mt-2">
+                  <img
+                    className="object-cover h-40 w-full"
+                    src={`${process.env.REACT_APP_API_URL}/uploads/image/${bannerImage}`}
+                  ></img>
+                </div>
+              </Link>
             </div>
           </div>
           <div className="col-span-5 lg:col-span-2">
@@ -384,7 +447,7 @@ const MainLayout = () => {
                 style={{ backgroundColor: "#0002ff" }}
                 className="px-3 py-1 text-white rounded-2xl w-1/6 h-10 text-2xl flex-1 lg:flex-none"
                 type="button"
-                onClick={() => setRuleModal(true)}
+                onClick={() => openRuleModal()}
               >
                 กติกา
               </button>
@@ -392,7 +455,7 @@ const MainLayout = () => {
                 style={{ backgroundColor: "#0002ff" }}
                 className="px-3 py-1 text-white rounded-2xl w-1/6 h-10 text-2xl flex-1 lg:flex-none"
                 type="button"
-                onClick={() => setRandomPrizeTransactionModal(true)}
+                onClick={() => openTransactionModal()}
               >
                 ประวัติ
               </button>
