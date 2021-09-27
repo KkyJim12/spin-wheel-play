@@ -63,7 +63,7 @@ const PrizeTable = (props) => {
             left: "50%",
             transform: "translate(-50%, -50%)",
           }}
-          className="flex items-center justify-center z-20"
+          className="flex items-center justify-center z-20 w-5/6 lg:w-2/6"
         >
           <div className="flex flex-col items-center w-full justify-center bg-white px-10 py-5 w-full rounded-2xl space-y-6">
             <h1 style={{ color: "#3d7d3b" }} className="text-4xl">
