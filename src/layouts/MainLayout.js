@@ -302,7 +302,7 @@ const MainLayout = () => {
             <h1 className="text-3xl text-black">ประวัติการสุ่ม</h1>
             <div className="h-32 overflow-y-scroll overflow-x-scroll lg:overflow-x-hidden">
               <table className="table-fixed w-full">
-                <thead>
+                <thead className="sticky top-0">
                   <tr className="text-left">
                     <th className="bg-yellow-300 text-xl py-2 w-24 lg:w-1/6">
                       ลำดับ
@@ -343,7 +343,7 @@ const MainLayout = () => {
             <h1 className="text-3xl text-black">ประวัติการแลกของรางวัล</h1>
             <div className="h-32 overflow-scroll overflow-x-scroll lg:overflow-x-hidden">
               <table className="table-fixed w-full">
-                <thead>
+                <thead className="sticky top-0">
                   <tr className="text-left">
                     <th className="bg-yellow-300 text-xl py-2 w-24 lg:w-1/6">
                       ลำดับ
@@ -415,8 +415,8 @@ const MainLayout = () => {
                 />
               </div>
               <div
-                className="overflow-y-scroll"
-                style={{ background: "#0B0D48", height: "58%" }}
+                className="overflow-y-scroll lg:h-3/5"
+                style={{ background: "#0B0D48", height: 560 }}
               >
                 <PrizeTable
                   getEvent={getEvent}

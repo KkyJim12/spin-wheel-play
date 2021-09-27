@@ -89,15 +89,15 @@ const PrizeTable = (props) => {
       )}
       <div className="h-full rounded-lg">
         <table className="w-full table-fixed">
-          <thead>
+          <thead className="sticky top-0">
             <tr
               className="text-black text-2xl"
               style={{ background: "#FFDD00" }}
             >
-              <th className="py-2 w-32">รางวัล</th>
-              <th className="py-2 w-32">พอยต์</th>
-              <th className="py-2 w-32">แลก</th>
-              <th className="py-2 w-32">สิทธิ์</th>
+              <th className="py-2 w-40">รางวัล</th>
+              <th className="py-2 w-40">พอยต์</th>
+              <th className="py-2 w-40">แลก</th>
+              <th className="py-2 w-40">สิทธิ์</th>
             </tr>
           </thead>
           <tbody>
