@@ -240,7 +240,8 @@ const MenuBar = forwardRef((props, ref) => {
               </div>
               <div className="col-span-4">
                 <input
-                  className="text-xl text-black border-0 ring-2 ring-gray-300 bg-white rounded-full w-full py-2 px-5 text-gray-700 leading-tight"
+                  style={{ border: "2px #d1d5db solid" }}
+                  className="text-xl text-black rounded-full w-full py-2 px-5 text-gray-700 focus:outline-none focus:shadow-outline"
                   id="username"
                   type="text"
                   onChange={(e) => setUsername(e.target.value)}
@@ -256,7 +257,8 @@ const MenuBar = forwardRef((props, ref) => {
               </div>
               <div className="col-span-4">
                 <input
-                  className="text-xl text-black border-0 ring-2 ring-gray-300 bg-white rounded-full w-full py-2 px-5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  style={{ border: "2px #d1d5db solid" }}
+                  className="text-xl text-black rounded-full w-full py-2 px-5 text-gray-700 focus:outline-none focus:shadow-outline"
                   id="password"
                   type="password"
                   onChange={(e) => setPassword(e.target.value)}
