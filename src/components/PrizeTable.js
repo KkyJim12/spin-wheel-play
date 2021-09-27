@@ -94,10 +94,10 @@ const PrizeTable = (props) => {
               className="text-black text-2xl"
               style={{ background: "#FFDD00" }}
             >
-              <th className="py-2 w-40">รางวัล</th>
-              <th className="py-2 w-40">พอยต์</th>
-              <th className="py-2 w-40">แลก</th>
-              <th className="py-2 w-40">สิทธิ์</th>
+              <th className="py-2 w-32">รางวัล</th>
+              <th className="py-2 w-32">พอยต์</th>
+              <th className="py-2 w-32">แลก</th>
+              <th className="py-2 w-32">สิทธิ์</th>
             </tr>
           </thead>
           <tbody>
