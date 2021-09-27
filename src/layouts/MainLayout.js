@@ -301,15 +301,15 @@ const MainLayout = () => {
           <div className="bg-white px-4 lg:px-20 py-5 w-5/6 lg:w-3/6 rounded-2xl space-y-6 border-4 border-yellow-500">
             <h1 className="text-3xl text-black">ประวัติการสุ่ม</h1>
             <div className="h-32 overflow-y-scroll overflow-x-scroll lg:overflow-x-hidden">
-              <table className="table-fixed w-full">
+              <table className="lg:table-fixed w-full">
                 <thead>
                   <tr className="text-left">
-                    <th className="bg-yellow-300 text-xl py-2 w-1/6">ลำดับ</th>
-                    <th className="bg-yellow-300 text-xl py-2 w-3/6">
+                    <th className="bg-yellow-300 text-xl py-2 lg:w-1/6">ลำดับ</th>
+                    <th className="bg-yellow-300 text-xl py-2 lg:w-3/6">
                       ของรางวัล
                     </th>
-                    <th className="bg-yellow-300 text-xl py-2 w-1/6">วันที่</th>
-                    <th className="bg-yellow-300 text-xl py-2 w-1/6">เวลา</th>
+                    <th className="bg-yellow-300 text-xl py-2 lg:w-1/6">วันที่</th>
+                    <th className="bg-yellow-300 text-xl py-2 lg:w-1/6">เวลา</th>
                   </tr>
                 </thead>
                 <tbody>
