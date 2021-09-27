@@ -58,14 +58,12 @@ const PrizeTable = (props) => {
       {exchangeSuccess && (
         <div
           style={{
+            position: "fixed",
             top: "50%",
             left: "50%",
-            width: isMobile ? 300 : 500,
-            height: isMobile ? 400 : 400,
-            marginTop: isMobile ? -200 : -200,
-            marginLeft: isMobile ? -150 : -250,
+            transform: "translate(-50%, -50%)",
           }}
-          className="flex absolute items-center justify-center z-20"
+          className="flex items-center justify-center z-20"
         >
           <div className="flex flex-col items-center w-full justify-center bg-white px-10 py-5 w-full rounded-2xl space-y-6">
             <h1 style={{ color: "#3d7d3b" }} className="text-4xl">
