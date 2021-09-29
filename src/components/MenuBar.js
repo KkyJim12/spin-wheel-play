@@ -167,22 +167,22 @@ const MenuBar = forwardRef((props, ref) => {
           </Alert>
         </Snackbar>
       )}
-      <div className="mb-2 flex flex-col lg:flex-row items-center space-x-0 lg:space-x-4 mb-4 space-y-2 lg:space-y-0">
+      <div className="flex flex-col items-center mb-2 mb-4 space-x-0 space-y-2 lg:flex-row lg:space-x-4 lg:space-y-0">
         <p className="text-2xl" style={{ color: "#05FFFE" }}>
           สวัสดี {fullname}
         </p>
         <button
           onClick={() => logout()}
-          className="border border-black text-black bg-yellow-500 p-2 flex flex-row justify-center items-center gap-2 rounded-lg w-full lg:w-40"
+          className="flex flex-row items-center justify-center w-full gap-2 p-2 text-black bg-yellow-500 border border-black rounded-lg lg:w-40"
         >
           <img src="/assets/exit.png" alt="exit" className="w-8" />
           <p>ออกจากระบบ</p>
         </button>
       </div>
-      <div className="flex flex-col lg:flex-row lg:space-x-4 space-y-2 lg:space-y-0">
+      <div className="flex flex-col space-y-2 lg:flex-row lg:space-x-4 lg:space-y-0">
         <button
           onClick={() => openChangePasswordModal()}
-          className="border-2 border-black text-black bg-yellow-500 rounded-full p-2 flex flex-row justify-center items-center gap-2 "
+          className="flex flex-row items-center justify-center gap-2 p-2 text-black bg-yellow-500 border-2 border-black rounded-full "
         >
           <img src="/assets/edit.png" alt="exit" className="w-8" />
           แก้ไขรหัสผ่าน
@@ -194,7 +194,7 @@ const MenuBar = forwardRef((props, ref) => {
           <input
             style={{ width: "17.5rem" }}
             maxLength="15"
-            className="pl-12 pr-20 h-max py-2 border-2 border-blue-300 text-black text-2xl placeholder-black bg-white rounded-full flex flex-row justify-center items-center gap-2 focus:outline-none focus:shadow-outline"
+            className="flex flex-row items-center justify-center gap-2 py-2 pl-12 pr-20 text-2xl text-black placeholder-black bg-white border-2 border-blue-300 rounded-full h-max focus:outline-none focus:shadow-outline"
             placeholder="กรอกโค้ด"
             onChange={(e) => setKey(e.target.value)}
             value={key}
@@ -204,7 +204,7 @@ const MenuBar = forwardRef((props, ref) => {
               onClick={() => redeemKey()}
               style={{ backgroundColor: "#05FFFE" }}
               type="button"
-              className="rounded-full px-6 py-2 self-center text-black text-2xl"
+              className="self-center px-6 py-2 text-2xl text-black rounded-full"
             >
               ส่ง
             </button>
@@ -222,26 +222,26 @@ const MenuBar = forwardRef((props, ref) => {
         left: "50%",
         transform: "translate(-50%, -50%)",
       }}
-      className="flex z-10 w-full items-center justify-center"
+      className="z-10 flex items-center justify-center w-full"
     >
-      <div className="py-1 w-5/6 lg:w-2/6">
+      <div className="w-5/6 py-1 lg:w-2/6">
         <div
           style={{ backgroundColor: "#FDAA01" }}
           className="flex items-center justify-center rounded-t-2xl"
         >
           <img src={LoginIcon} alt="login" />
-          <span className="text-black text-4xl ml-3">เข้าสู่ระบบ</span>
+          <span className="ml-3 text-4xl text-black">เข้าสู่ระบบ</span>
         </div>
-        <div className="bg-white flex flex-col text-black space-y-5 pt-7 pb-11 rounded-b-2xl">
-          <div className="flex items-center justify-center space-x-3 mt-4">
-            <div className="grid lg:grid-cols-6 items-center">
-              <div className="col-span-2 justify-self-end mr-3">
-                <label className="text-xl self-center">ชื่อผู้ใช้บัญชี</label>
+        <div className="flex flex-col space-y-5 text-black bg-white pt-7 pb-11 rounded-b-2xl">
+          <div className="flex items-center justify-center mt-4 space-x-3">
+            <div className="grid items-center lg:grid-cols-6">
+              <div className="col-span-2 mr-3 justify-self-end">
+                <label className="self-center text-xl">ชื่อผู้ใช้บัญชี</label>
               </div>
               <div className="col-span-4">
                 <input
                   style={{ border: "2px #d1d5db solid" }}
-                  className="text-xl text-black rounded-full w-full py-2 px-5 text-gray-700 focus:outline-none focus:shadow-outline"
+                  className="w-full px-5 py-2 text-xl text-black text-gray-700 rounded-full focus:outline-none focus:shadow-outline"
                   id="username"
                   type="text"
                   onChange={(e) => setUsername(e.target.value)}
@@ -251,14 +251,14 @@ const MenuBar = forwardRef((props, ref) => {
             </div>
           </div>
           <div className="flex items-center justify-center space-x-3">
-            <div className="grid lg:grid-cols-6 items-center">
-              <div className="col-span-2 justify-self-end mr-3">
-                <label className="text-xl self-center">รหัสผ่าน</label>
+            <div className="grid items-center lg:grid-cols-6">
+              <div className="col-span-2 mr-3 justify-self-end">
+                <label className="self-center text-xl">รหัสผ่าน</label>
               </div>
               <div className="col-span-4">
                 <input
                   style={{ border: "2px #d1d5db solid" }}
-                  className="text-xl text-black rounded-full w-full py-2 px-5 text-gray-700 focus:outline-none focus:shadow-outline"
+                  className="w-full px-5 py-2 text-xl text-black text-gray-700 rounded-full focus:outline-none focus:shadow-outline"
                   id="password"
                   type="password"
                   onChange={(e) => setPassword(e.target.value)}
@@ -272,23 +272,23 @@ const MenuBar = forwardRef((props, ref) => {
               <p className="text-red-600">{loginError}</p>
             </div>
           )}
-          <div className="flex flex-col lg:flex-row px-3 justify-center space-y-3 lg:space-y-0 lg:space-x-3">
+          <div className="flex flex-col justify-center px-3 space-y-3 lg:flex-row lg:space-y-0 lg:space-x-3">
             <button
               onClick={() => login()}
-              className="bg-purple-800 text-white px-7 py-3 rounded-full"
+              className="py-3 text-white bg-purple-800 rounded-full px-7"
               type="button"
             >
               เข้าสู่ระบบ
             </button>
             <button
               onClick={() => closeLoginModal()}
-              className="border border-purple-800 bg-white text-purple-800 px-7 py-3 rounded-full"
+              className="py-3 text-purple-800 bg-white border border-purple-800 rounded-full px-7"
               type="button"
             >
               ยกเลิก
             </button>
           </div>
-          <div className="flex justify-center font-semibold px-2 text-center">
+          <div className="flex justify-center px-2 font-semibold text-center">
             พบปัญหาการเข้าสู่ระบบหรือยังไม่มีบัญชีผู้ใช้กรุณาติดต่อแอดมิน
           </div>
         </div>
@@ -297,7 +297,7 @@ const MenuBar = forwardRef((props, ref) => {
   );
 
   const changePasswordModal = (
-    <div className="flex z-20 items-center justify-center w-full h-full">
+    <div className="z-20 flex items-center justify-center w-full h-full">
       <div
         style={{
           position: "fixed",
@@ -309,21 +309,21 @@ const MenuBar = forwardRef((props, ref) => {
       >
         <div
           style={{ backgroundColor: "#FDAA01" }}
-          className="flex items-center justify-center rounded-t-2xl py-4"
+          className="flex items-center justify-center py-4 rounded-t-2xl"
         >
           <img src={EditIcon} alt="login" />
-          <span className="text-black text-4xl ml-3">แก้ไขรหัสผ่าน</span>
+          <span className="ml-3 text-4xl text-black">แก้ไขรหัสผ่าน</span>
         </div>
-        <div className="bg-white flex flex-col text-black space-y-5 pt-7 pb-11 rounded-b-2xl px-3">
+        <div className="flex flex-col px-3 space-y-5 text-black bg-white pt-7 pb-11 rounded-b-2xl">
           <div className="flex items-center justify-center space-x-3">
-            <div className="grid grid-cols-8 items-center">
-              <div className="col-span-3 justify-self-end mr-3">
-                <label className="text-xl self-center">รหัสผ่านเดิม</label>
+            <div className="grid items-center grid-cols-8">
+              <div className="col-span-3 mr-3 justify-self-end">
+                <label className="self-center text-xl">รหัสผ่านเดิม</label>
               </div>
               <div className="col-span-5">
                 <input
                   style={{ border: "2px #d1d5db solid" }}
-                  className="text-xl text-black rounded-full w-full py-2 px-5 text-gray-700 focus:outline-none focus:shadow-outline"
+                  className="w-full px-5 py-2 text-xl text-black text-gray-700 rounded-full focus:outline-none focus:shadow-outline"
                   id="oldPassword"
                   type="password"
                   onChange={(e) => setOldPassword(e.target.value)}
@@ -333,14 +333,14 @@ const MenuBar = forwardRef((props, ref) => {
             </div>
           </div>
           <div className="flex items-center justify-center space-x-3">
-            <div className="grid grid-cols-8 items-center">
-              <div className="col-span-3 justify-self-end mr-3">
-                <label className="text-xl self-center">รหัสผ่านใหม่</label>
+            <div className="grid items-center grid-cols-8">
+              <div className="col-span-3 mr-3 justify-self-end">
+                <label className="self-center text-xl">รหัสผ่านใหม่</label>
               </div>
               <div className="col-span-5">
                 <input
                   style={{ border: "2px #d1d5db solid" }}
-                  className="text-xl text-black rounded-full w-full py-2 px-5 text-gray-700 focus:outline-none focus:shadow-outline"
+                  className="w-full px-5 py-2 text-xl text-black text-gray-700 rounded-full focus:outline-none focus:shadow-outline"
                   id="newPassword"
                   type="password"
                   onChange={(e) => setNewPassword(e.target.value)}
@@ -350,16 +350,16 @@ const MenuBar = forwardRef((props, ref) => {
             </div>
           </div>
           <div className="flex items-center justify-center space-x-3">
-            <div className="grid grid-cols-8 items-center">
-              <div className="col-span-3 justify-self-end mr-3">
-                <label className="text-xl self-center">
+            <div className="grid items-center grid-cols-8">
+              <div className="col-span-3 mr-3 justify-self-end">
+                <label className="self-center text-xl">
                   ยืนยันรหัสผ่านใหม่
                 </label>
               </div>
               <div className="col-span-5">
                 <input
                   style={{ border: "2px #d1d5db solid" }}
-                  className="text-xl text-black rounded-full w-full py-2 px-5 text-gray-700 focus:outline-none focus:shadow-outline"
+                  className="w-full px-5 py-2 text-xl text-black text-gray-700 rounded-full focus:outline-none focus:shadow-outline"
                   id="confirmNewPassword"
                   type="password"
                   onChange={(e) => setConfirmNewPassword(e.target.value)}
@@ -376,14 +376,14 @@ const MenuBar = forwardRef((props, ref) => {
           <div className="flex justify-center space-x-3">
             <button
               onClick={() => changePassword()}
-              className="bg-purple-800 text-white px-7 py-3 rounded-full"
+              className="py-3 text-white bg-purple-800 rounded-full px-7"
               type="button"
             >
               บันทึก
             </button>
             <button
               onClick={() => closeChangePasswordModal()}
-              className="border border-purple-800 bg-white text-purple-800 px-7 py-3 rounded-full"
+              className="py-3 text-purple-800 bg-white border border-purple-800 rounded-full px-7"
               type="button"
             >
               ยกเลิก
@@ -400,7 +400,7 @@ const MenuBar = forwardRef((props, ref) => {
         <button
           onClick={() => openLoginModal()}
           style={{ backgroundColor: "#FDAA01" }}
-          className="px-5 py-2 text-black flex items-center rounded-xl"
+          className="flex items-center px-5 py-2 text-black rounded-xl"
           type="button"
         >
           <img src={LoginIcon} alt="login" />
@@ -413,11 +413,11 @@ const MenuBar = forwardRef((props, ref) => {
   return (
     <>
       <div className="p-8 bg-blue-900 rounded-lg">
-        <div className="grid lg:grid-cols-3 items-center">
+        <div className="grid items-center lg:grid-cols-3">
           <div className="col-span-2">{isAuth ? isLogin : isGuest}</div>
-          <div className="text-green-200 text-center ml-auto text-3xl col-span-3 lg:col-span-1 space-y-4 mt-2 lg:mt-0 w-full lg:w-4/6">
+          <div className="w-full col-span-3 mt-2 ml-auto space-y-4 text-3xl text-center text-green-200 lg:col-span-1 lg:mt-0 lg:w-4/6">
             <p>ระยะเวลากิจกรรม</p>
-            <div className="border-blue-400 border p-4">อีก {dayDiff} วัน</div>
+            <div className="p-4 border border-blue-400">อีก {dayDiff} วัน</div>
           </div>
         </div>
       </div>

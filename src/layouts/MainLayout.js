@@ -1,17 +1,15 @@
-import CoinA from "assets/image/coin-a.png";
-import CoinB from "assets/image/coin-b.png";
-import CoinC from "assets/image/coin-c.png";
-import axios from "axios";
-import MenuBar from "components/MenuBar";
-import PrizeTable from "components/PrizeTable";
-import { Wheel } from "components/Wheel";
-import moment from "moment";
-import { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router";
-import "styles/main.css";
-import { isMobile } from "react-device-detect";
-import { Link } from "react-router-dom";
-import { width } from "@mui/system";
+import CoinA from 'assets/image/coin-a.png';
+import CoinB from 'assets/image/coin-b.png';
+import CoinC from 'assets/image/coin-c.png';
+import axios from 'axios';
+import MenuBar from 'components/MenuBar';
+import PrizeTable from 'components/PrizeTable';
+import { Wheel } from 'components/Wheel';
+import moment from 'moment';
+import { useEffect, useState, useRef } from 'react';
+import { useParams } from 'react-router';
+import 'styles/main.css';
+import { Link } from 'react-router-dom';
 
 const MainLayout = () => {
   let { id } = useParams();
@@ -22,15 +20,15 @@ const MainLayout = () => {
   const [coinB, setCoinB] = useState(0);
   const [coinC, setCoinC] = useState(0);
 
-  const [endDate, setendDate] = useState("");
+  const [endDate, setendDate] = useState('');
   const [eventPrizeExchange, setEventPrizeExchange] = useState([]);
   const [eventPrizeRandom, setEventPrizeRandom] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(
     'url("/assets/bg.png")'
   );
-  const [bannerImage, setBannerImage] = useState("");
-  const [bannerLink, setBannerLink] = useState("");
-  const [popup, setPopup] = useState("");
+  const [bannerImage, setBannerImage] = useState('');
+  const [bannerLink, setBannerLink] = useState('');
+  const [popup, setPopup] = useState('');
   const [popupModal, setPopupModal] = useState(true);
 
   // Random Prize Transaction Modal
@@ -68,7 +66,7 @@ const MainLayout = () => {
   const getWalletInfo = async () => {
     try {
       const response = await axios.get(
-        process.env.REACT_APP_API_URL + "/api/v1/play/auth/wallet/" + id
+        process.env.REACT_APP_API_URL + '/api/v1/play/auth/wallet/' + id
       );
 
       setCoinA(response.data.wallet[0].coinA);
@@ -80,7 +78,7 @@ const MainLayout = () => {
   const getWalletInfoPlay = async () => {
     try {
       const response = await axios.get(
-        process.env.REACT_APP_API_URL + "/api/v1/play/auth/wallet/" + id
+        process.env.REACT_APP_API_URL + '/api/v1/play/auth/wallet/' + id
       );
 
       setCoinA(response.data.wallet[0].coinA);
@@ -93,15 +91,15 @@ const MainLayout = () => {
 
   const getEvent = async () => {
     try {
-      let response = "";
+      let response = '';
 
-      if (!localStorage.getItem("token")) {
+      if (!localStorage.getItem('token')) {
         response = await axios.get(
-          process.env.REACT_APP_API_URL + "/api/v1/play/events/" + id
+          process.env.REACT_APP_API_URL + '/api/v1/play/events/' + id
         );
       } else {
         response = await axios.get(
-          process.env.REACT_APP_API_URL + "/api/v1/play/events/" + id + "/login"
+          process.env.REACT_APP_API_URL + '/api/v1/play/events/' + id + '/login'
         );
       }
 
@@ -109,7 +107,7 @@ const MainLayout = () => {
         return {
           imageSrc:
             process.env.REACT_APP_API_URL +
-            "/uploads/image/" +
+            '/uploads/image/' +
             item.prize.image,
           color: item.color,
         };
@@ -140,51 +138,51 @@ const MainLayout = () => {
   const ruleModalShow = (
     <div
       style={{
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
       }}
-      className="flex items-center justify-center z-20 w-full h-full"
+      className='z-20 flex items-center justify-center w-full h-full'
     >
-      <div className="flex flex-col items-center justify-center bg-white pb-5 w-5/6 lg:w-2/6 rounded-2xl space-y-6">
+      <div className='flex flex-col items-center justify-center w-5/6 pb-5 space-y-6 bg-white lg:w-2/6 rounded-2xl'>
         <div
-          className="w-full flex justify-center rounded-t-2xl py-3"
-          style={{ background: "#0b0d48" }}
+          className='flex justify-center w-full py-3 rounded-t-2xl'
+          style={{ background: '#0b0d48' }}
         >
-          <h1 className="text-4xl text-white">กติกา</h1>
+          <h1 className='text-4xl text-white'>กติกา</h1>
         </div>
-        <div className="flex flex-col text-2xl py-3 px-2 lg:px-10">
+        <div className='flex flex-col px-2 py-3 text-2xl lg:px-10'>
           <div>
             <span>1.เหรียญ</span>
-            <img className="h-10 w-10 mx-2 inline" src={CoinA} alt="coin"></img>
+            <img className='inline w-10 h-10 mx-2' src={CoinA} alt='coin'></img>
             <span>สามารถหมุนวงล้อได้ 1 ครั้ง</span>
           </div>
-          <div className="mt-5">
+          <div className='mt-5'>
             <span>2.หมุนวงล้อ 1 ครั้ง จะได้</span>
             <img
-              className="w-10 h-10 mx-2 inline"
+              className='inline w-10 h-10 mx-2'
               src={CoinB}
-              alt="coin"
-            ></img>{" "}
+              alt='coin'
+            ></img>{' '}
             <span>1 เหรียญ เพื่อนำไปแลกของรางวัลในตาราง</span>
           </div>
-          <div className="mt-5">
+          <div className='mt-5'>
             <span>3.เหรียญ</span>
             <img
-              className="w-10 h-10 mx-2 inline"
+              className='inline w-10 h-10 mx-2'
               src={CoinC}
-              alt="coin"
-            ></img>{" "}
+              alt='coin'
+            ></img>{' '}
             <span>
               สามารถหาได้จากการ หมุนวงล้อ เพื่อนำไปแลกของรางวัลสุดพิเศษในตาราง
             </span>
           </div>
         </div>
         <button
-          style={{ background: "#0b0d48" }}
+          style={{ background: '#0b0d48' }}
           onClick={() => closeRuleModal()}
-          className="border-2 text-white px-10 py-5 rounded-3xl hover:bg-red-300"
+          className='px-10 py-5 text-white border-2 rounded-3xl hover:bg-red-300'
         >
           ปิด
         </button>
@@ -199,7 +197,7 @@ const MainLayout = () => {
     try {
       const response = await axios.get(
         process.env.REACT_APP_API_URL +
-          "/api/v1/play/auth/prize-random-transaction/" +
+          '/api/v1/play/auth/prize-random-transaction/' +
           id
       );
 
@@ -219,7 +217,7 @@ const MainLayout = () => {
     try {
       const response = await axios.get(
         process.env.REACT_APP_API_URL +
-          "/api/v1/play/auth/prize-exchange-transaction/" +
+          '/api/v1/play/auth/prize-exchange-transaction/' +
           id
       );
 
@@ -236,7 +234,7 @@ const MainLayout = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem('token')) {
       getPrizeRandomTransaction();
       getPrizeExchangeTransaction();
     }
@@ -247,7 +245,7 @@ const MainLayout = () => {
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem('token')) {
       getWalletInfo();
     }
   }, []);
@@ -270,19 +268,19 @@ const MainLayout = () => {
   return (
     <>
       {popupModal && popup && (
-        <div className="absolute flex flex-col items-center w-full h-screen justify-center z-20">
-          <div className="relative bg-white w-5/6 lg:w-3/6 space-y-6 ">
-            <div className="absolute right-0 mr-2 mt-2 bg-black rounded-lg text-white px-2 py-1 bg-opacity-50">
+        <div className='absolute z-20 flex flex-col items-center justify-center w-full h-screen'>
+          <div className='relative w-5/6 space-y-6 bg-white lg:w-3/6 '>
+            <div className='absolute right-0 px-2 py-1 mt-2 mr-2 text-white bg-black bg-opacity-50 rounded-lg'>
               <button
                 onClick={() => closePopupModal()}
-                type="button rounded-full"
+                type='button rounded-full'
               >
                 ปิด
               </button>
             </div>
             <img
-              className="w-full"
-              src={process.env.REACT_APP_API_URL + "/uploads/image/" + popup}
+              className='w-full'
+              src={process.env.REACT_APP_API_URL + '/uploads/image/' + popup}
             ></img>
           </div>
         </div>
@@ -291,29 +289,29 @@ const MainLayout = () => {
       {randomPrizeTransactionModal && (
         <div
           style={{
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
           }}
-          className="flex flex-col items-center w-full h-screen justify-center z-20"
+          className='z-20 flex flex-col items-center justify-center w-full h-screen'
         >
-          <div className="bg-white px-4 lg:px-20 py-5 w-5/6 lg:w-3/6 rounded-2xl space-y-6 border-4 border-yellow-500">
-            <h1 className="text-3xl text-black">ประวัติการสุ่ม</h1>
-            <div className="h-32 overflow-y-scroll overflow-x-scroll lg:overflow-x-hidden">
-              <table className="table-fixed w-full">
-                <thead className="sticky top-0">
-                  <tr className="text-left">
-                    <th className="bg-yellow-300 text-xl py-2 w-24 lg:w-1/6">
+          <div className='w-5/6 px-4 py-5 space-y-6 bg-white border-4 border-yellow-500 lg:px-20 lg:w-3/6 rounded-2xl'>
+            <h1 className='text-3xl text-black'>ประวัติการสุ่ม</h1>
+            <div className='h-32 overflow-x-scroll overflow-y-scroll lg:overflow-x-hidden'>
+              <table className='w-full table-fixed'>
+                <thead className='sticky top-0'>
+                  <tr className='text-left'>
+                    <th className='w-24 py-2 text-xl bg-yellow-300 lg:w-1/6'>
                       ลำดับ
                     </th>
-                    <th className="bg-yellow-300 text-xl py-2 w-32 lg:w-3/6">
+                    <th className='w-32 py-2 text-xl bg-yellow-300 lg:w-3/6'>
                       ของรางวัล
                     </th>
-                    <th className="bg-yellow-300 text-xl py-2 w-32 lg:w-1/6">
+                    <th className='w-32 py-2 text-xl bg-yellow-300 lg:w-1/6'>
                       วันที่
                     </th>
-                    <th className="bg-yellow-300 text-xl py-2 w-32 lg:w-1/6">
+                    <th className='w-32 py-2 text-xl bg-yellow-300 lg:w-1/6'>
                       เวลา
                     </th>
                   </tr>
@@ -324,15 +322,15 @@ const MainLayout = () => {
                       <tr
                         index={index}
                         key={item.id}
-                        className="text-left border-t-2 border-black"
+                        className='text-left border-t-2 border-black'
                       >
-                        <td className="text-xl py-2">{index + 1}</td>
-                        <td className="text-xl py-2">{item.prize.name}</td>
-                        <td className="text-xl py-2">
-                          {moment(item.createdAt).format("DD/MM/YYYY")}
+                        <td className='py-2 text-xl'>{index + 1}</td>
+                        <td className='py-2 text-xl'>{item.prize.name}</td>
+                        <td className='py-2 text-xl'>
+                          {moment(item.createdAt).format('DD/MM/YYYY')}
                         </td>
-                        <td className="text-xl py-2">
-                          {moment(item.createdAt).format("hh:mm A")}
+                        <td className='py-2 text-xl'>
+                          {moment(item.createdAt).format('hh:mm A')}
                         </td>
                       </tr>
                     );
@@ -340,21 +338,21 @@ const MainLayout = () => {
                 </tbody>
               </table>
             </div>
-            <h1 className="text-3xl text-black">ประวัติการแลกของรางวัล</h1>
-            <div className="h-32 overflow-scroll overflow-x-scroll lg:overflow-x-hidden">
-              <table className="table-fixed w-full">
-                <thead className="sticky top-0">
-                  <tr className="text-left">
-                    <th className="bg-yellow-300 text-xl py-2 w-24 lg:w-1/6">
+            <h1 className='text-3xl text-black'>ประวัติการแลกของรางวัล</h1>
+            <div className='h-32 overflow-scroll overflow-x-scroll lg:overflow-x-hidden'>
+              <table className='w-full table-fixed'>
+                <thead className='sticky top-0'>
+                  <tr className='text-left'>
+                    <th className='w-24 py-2 text-xl bg-yellow-300 lg:w-1/6'>
                       ลำดับ
                     </th>
-                    <th className="bg-yellow-300 text-xl py-2 w-32 lg:w-3/6">
+                    <th className='w-32 py-2 text-xl bg-yellow-300 lg:w-3/6'>
                       ของรางวัล
                     </th>
-                    <th className="bg-yellow-300 text-xl py-2 w-32 lg:w-1/6">
+                    <th className='w-32 py-2 text-xl bg-yellow-300 lg:w-1/6'>
                       วันที่
                     </th>
-                    <th className="bg-yellow-300 text-xl py-2 w-32 lg:w-1/6">
+                    <th className='w-32 py-2 text-xl bg-yellow-300 lg:w-1/6'>
                       เวลา
                     </th>
                   </tr>
@@ -365,15 +363,15 @@ const MainLayout = () => {
                       <tr
                         index={index}
                         key={item.id}
-                        className="text-left border-t-2 border-black"
+                        className='text-left border-t-2 border-black'
                       >
-                        <td className="text-xl py-2">{index + 1}</td>
-                        <td className="text-xl py-2">{item.prize.name}</td>
-                        <td className="text-xl py-2">
-                          {moment(item.createdAt).format("DD/MM/YYYY")}
+                        <td className='py-2 text-xl'>{index + 1}</td>
+                        <td className='py-2 text-xl'>{item.prize.name}</td>
+                        <td className='py-2 text-xl'>
+                          {moment(item.createdAt).format('DD/MM/YYYY')}
                         </td>
-                        <td className="text-xl py-2">
-                          {moment(item.createdAt).format("hh:mm A")}
+                        <td className='py-2 text-xl'>
+                          {moment(item.createdAt).format('hh:mm A')}
                         </td>
                       </tr>
                     );
@@ -381,10 +379,10 @@ const MainLayout = () => {
                 </tbody>
               </table>
             </div>
-            <div className="flex justify-center">
+            <div className='flex justify-center'>
               <button
                 onClick={() => closeTransactionModal()}
-                className="border-2 text-black text-2xl px-10 py-5 rounded-3xl bg-yellow-500"
+                className='px-10 py-5 text-2xl text-black bg-yellow-500 border-2 rounded-3xl'
               >
                 ปิด
               </button>
@@ -393,15 +391,15 @@ const MainLayout = () => {
         </div>
       )}
       <div
-        className="min-h-screen text-white"
+        className='min-h-screen text-white'
         style={{
           backgroundImage: `${backgroundImage}`,
         }}
       >
-        <div className="grid grid-cols-5">
-          <div className="col-span-5 lg:col-span-3">
-            <div className="p-4 lg:h-screen">
-              <div className="mb-4">
+        <div className='grid grid-cols-5'>
+          <div className='col-span-5 lg:col-span-3'>
+            <div className='p-4 lg:h-screen'>
+              <div className='mb-4'>
                 <MenuBar
                   openPopupModal={openPopupModal}
                   ref={MenuBarRef}
@@ -415,8 +413,8 @@ const MainLayout = () => {
                 />
               </div>
               <div
-                className="overflow-y-scroll lg:h-3/5"
-                style={{ background: "#0B0D48", height: 560 }}
+                className='overflow-y-scroll lg:h-3/5'
+                style={{ background: '#0B0D48', height: 560 }}
               >
                 <PrizeTable
                   getEvent={getEvent}
@@ -425,73 +423,73 @@ const MainLayout = () => {
                 />
               </div>
               <Link
-                to={{ pathname: bannerLink ? bannerLink : "" }}
-                target="_blank"
+                to={{ pathname: bannerLink ? bannerLink : '' }}
+                target='_blank'
               >
-                <div className="bg-white mt-2">
+                <div className='mt-2 bg-white'>
                   <img
-                    className="object-cover h-40 w-full"
+                    className='object-cover w-full h-40'
                     src={`${process.env.REACT_APP_API_URL}/uploads/image/${bannerImage}`}
                   ></img>
                 </div>
               </Link>
             </div>
           </div>
-          <div className="col-span-5 lg:col-span-2">
-            <div className="flex flex-col lg:flex-row gap-8 p-8">
+          <div className='col-span-5 lg:col-span-2'>
+            <div className='flex flex-col gap-8 p-8 lg:flex-row'>
               <div
-                className="relative flex-1 flex-row text-center rounded-full"
-                style={{ backgroundColor: "#05FFFE" }}
+                className='relative flex-row flex-1 text-center rounded-full'
+                style={{ backgroundColor: '#05FFFE' }}
               >
                 <img
-                  src="/assets/coin.png"
-                  alt="exit"
-                  className="absolute w-12 -left-4 -top-2"
+                  src='/assets/coin.png'
+                  alt='exit'
+                  className='absolute w-12 -left-4 -top-2'
                 />
-                <p className="text-black text-xl">{coinA}</p>
+                <p className='text-xl text-black'>{coinA}</p>
               </div>
               <div
-                className="relative flex-1 flex-row text-center rounded-full"
-                style={{ backgroundColor: "#05FFFE" }}
+                className='relative flex-row flex-1 text-center rounded-full'
+                style={{ backgroundColor: '#05FFFE' }}
               >
                 <img
-                  src="/assets/star.png"
-                  alt="exit"
-                  className="absolute w-12 -left-4 -top-2"
+                  src='/assets/star.png'
+                  alt='exit'
+                  className='absolute w-12 -left-4 -top-2'
                 />
-                <p className="text-black text-xl">{coinC}</p>
+                <p className='text-xl text-black'>{coinC}</p>
               </div>
               <div
-                className="relative flex-1 flex-row text-center rounded-full"
-                style={{ backgroundColor: "#05FFFE" }}
+                className='relative flex-row flex-1 text-center rounded-full'
+                style={{ backgroundColor: '#05FFFE' }}
               >
                 <img
-                  src="/assets/wheel.png"
-                  alt="exit"
-                  className="absolute w-12 -left-4 -top-2"
+                  src='/assets/wheel.png'
+                  alt='exit'
+                  className='absolute w-12 -left-4 -top-2'
                 />
-                <p className="text-black text-xl">{coinB}</p>
+                <p className='text-xl text-black'>{coinB}</p>
               </div>
             </div>
-            <div className="flex flex-row justify-end px-8 space-x-3">
+            <div className='flex flex-row justify-end px-8 space-x-3'>
               <button
-                style={{ backgroundColor: "#0002ff" }}
-                className="px-3 py-1 text-white rounded-2xl w-1/6 h-10 text-2xl flex-1 lg:flex-none"
-                type="button"
+                style={{ backgroundColor: '#0002ff' }}
+                className='flex-1 w-1/6 h-10 px-3 py-1 text-2xl text-white rounded-2xl lg:flex-none'
+                type='button'
                 onClick={() => openRuleModal()}
               >
                 กติกา
               </button>
               <button
-                style={{ backgroundColor: "#0002ff" }}
-                className="px-3 py-1 text-white rounded-2xl w-1/6 h-10 text-2xl flex-1 lg:flex-none"
-                type="button"
+                style={{ backgroundColor: '#0002ff' }}
+                className='flex-1 w-1/6 h-10 px-3 py-1 text-2xl text-white rounded-2xl lg:flex-none'
+                type='button'
                 onClick={() => openTransactionModal()}
               >
                 ประวัติ
               </button>
             </div>
-            <div className="flex justify-center">{wheel}</div>
+            <div className='flex justify-center'>{wheel}</div>
           </div>
         </div>
       </div>

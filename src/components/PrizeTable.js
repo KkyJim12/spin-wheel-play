@@ -5,7 +5,6 @@ import Alert from "@mui/material/Alert";
 import axios from "axios";
 import { useState } from "react";
 import { useParams } from "react-router";
-import { isMobile } from "react-device-detect";
 
 const PrizeTable = (props) => {
   let { id } = useParams();
@@ -63,9 +62,9 @@ const PrizeTable = (props) => {
             left: "50%",
             transform: "translate(-50%, -50%)",
           }}
-          className="flex items-center justify-center z-20 w-5/6 lg:w-2/6"
+          className="z-20 flex items-center justify-center w-5/6 lg:w-2/6"
         >
-          <div className="flex flex-col items-center w-full justify-center bg-white px-10 py-5 w-full rounded-2xl space-y-6">
+          <div className="flex flex-col items-center justify-center w-full px-10 py-5 space-y-6 bg-white rounded-2xl">
             <h1 style={{ color: "#3d7d3b" }} className="text-4xl">
               ยินดีด้วย!!
             </h1>
@@ -80,7 +79,7 @@ const PrizeTable = (props) => {
             <button
               style={{ background: "#0b0d48" }}
               onClick={() => agreeExchangeSuccess()}
-              className="border-2 text-white px-10 py-5 rounded-3xl hover:bg-red-300"
+              className="px-10 py-5 text-white border-2 rounded-3xl hover:bg-red-300"
             >
               ปิด
             </button>
@@ -91,13 +90,13 @@ const PrizeTable = (props) => {
         <table className="w-full table-fixed">
           <thead className="sticky top-0">
             <tr
-              className="text-black text-2xl"
+              className="text-2xl text-black"
               style={{ background: "#FFDD00" }}
             >
-              <th className="py-2 w-40">รางวัล</th>
-              <th className="py-2 w-40">พอยต์</th>
-              <th className="py-2 w-40">แลก</th>
-              <th className="py-2 w-40">สิทธิ์</th>
+              <th className="w-40 py-2">รางวัล</th>
+              <th className="w-40 py-2">พอยต์</th>
+              <th className="w-40 py-2">แลก</th>
+              <th className="w-40 py-2">สิทธิ์</th>
             </tr>
           </thead>
           <tbody>
@@ -105,9 +104,9 @@ const PrizeTable = (props) => {
               return (
                 <tr key={item.id} className="text-2xl">
                   <td className="h-16 px-4 py-4">
-                    <div className="border-white border-4">
+                    <div className="border-4 border-white">
                       <img
-                        className="w-full h-32 object-cover"
+                        className="object-cover w-full h-32"
                         src={
                           process.env.REACT_APP_API_URL +
                           "/uploads/image/" +
@@ -116,14 +115,14 @@ const PrizeTable = (props) => {
                       ></img>
                     </div>
                   </td>
-                  <td className="h-16  py-2">
-                    <div className="flex flex-row justify-center items-center gap-2">
+                  <td className="h-16 py-2">
+                    <div className="flex flex-row items-center justify-center gap-2">
                       <img
                         src={item.coinType === 1 ? CoinB : CoinC}
                         alt="coin"
                         className="w-16"
                       />
-                      <p className="text-yellow-500 font-bold">
+                      <p className="font-bold text-yellow-500">
                         x {item.quantity}
                       </p>
                     </div>
@@ -133,12 +132,12 @@ const PrizeTable = (props) => {
                       onClick={() =>
                         exchangePrize(item.id, item.prize.id, item.prize.image)
                       }
-                      className="border-black bg-yellow-500 px-4 py-2 rounded"
+                      className="px-4 py-2 bg-yellow-500 border-black rounded"
                     >
                       แลกรางวัล
                     </button>
                   </td>
-                  <td className="text-center text-yellow-500 font-bold">
+                  <td className="font-bold text-center text-yellow-500">
                     {item.event_prize_exchange_user_limit
                       ? item.event_prize_exchange_user_limit.count
                       : "0"}
