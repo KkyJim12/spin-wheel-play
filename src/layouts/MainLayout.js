@@ -127,6 +127,7 @@ const MainLayout = () => {
 
       setendDate(response.data.data.event.endDate);
       setEventPrizeExchange(response.data.data.eventPrizeExchange);
+      getWalletInfoPlay();
     } catch (error) {
       console.log(error.response);
     }
